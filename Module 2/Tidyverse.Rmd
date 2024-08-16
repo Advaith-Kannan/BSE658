@@ -42,7 +42,7 @@ sum(is.na(covid_testdata$Negative))
 Tidyverse package contains a list of packages useful for working with data.
 
 ```{r}
-# install.packages("tidyverse")
+install.packages("tidyverse")
 library(tidyverse)
 ```
 
@@ -66,7 +66,7 @@ covid_data
 Now we will look at another tidyverse package, [**dplyr**](https://dplyr.tidyverse.org): it is used for editing tibbles.
 
 ```{r}
-# library(dplyr)
+library(dplyr)
 ```
 
 We will look at `filter` and `select` functions from the dplyr package:
