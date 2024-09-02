@@ -1,0 +1,254 @@
+# PART-1: Standardization, Correlation and Handling Missing Values
+
+# Standardization
+
+From the book, we were introduced to the concept of z-scores or standard scores. Mathematically, the z-score stands for the following value -
+
+z = (value - mean)/standard deviation
+
+The main advantage given by standardization is interpretability: Sometimes, there are no defined metrics to assess the meaning of a statistic. For example, in a survey that assesses a person's grumpiness level based on the number of questions answered in a grumpy manner, it is difficult to interpret what a particular grumpiness score means. What does it mean to answer 35 out of 50 questions in a grumpy manner? Z-score gives us a solution to this problem. Now, based on your z-score, we can see how many standard deviations above or below the mean value your response lies.
+
+Let us now try finding the standard scores of an arbitrary data set -
+
+```{r}
+X = c(15, 16, 17, 18, 18, 19, 20)                       
+z = (X - mean(X)) / sd(X)
+z
+```
+
+## Correlation
+
+Correlation helps us describe relationships between two variables. Understanding this through an example. Loading data -
+
+```{r}
+library(psych)
+setwd("C:/Personal/Academics/IITK Resources/Sem-7/BSE658/GitHub/BSE658/Module 3/Notebooks/")
+load( "parenthood.Rdata" )
+head(parenthood)
+```
+
+```{r}
+describe(parenthood)
+```
+
+Visualizing the data -
+
+```{r}
+hist(parenthood$dan.sleep)
+```
+
+```{r}
+hist(parenthood$baby.sleep)
+```
+
+```{r}
+hist(parenthood$dan.grump)
+```
+
+Creating scatterplots using car package.
+
+```{r}
+library(car)
+scatterplot( dan.grump ~ dan.sleep, data = parenthood, regLine = FALSE, smooth = FALSE)
+scatterplot
+```
+
+```{r}
+
+scatterplot( baby.sleep ~ dan.grump, data = parenthood, regLine = FALSE, smooth = FALSE)
+scatterplot
+```
+
+```{r}
+scatterplot( baby.sleep ~ dan.sleep, data = parenthood, regLine = FALSE, smooth = FALSE)
+scatterplot
+```
+
+From above plots, it is visible that dan's sleep and his grumpiness are related to each other and even his baby's sleep and his grump are related. However, it is also clear that dan's sleep and his grumpiness are better related than the baby's sleep and dan's grump. This can be quantified using the correlation coefficient (r). This is closely related to the notion of covariance. Let us try finding correlation coefficient values too now.
+
+```{r}
+cor(x = parenthood$dan.sleep, y = parenthood$dan.grump)
+```
+
+Hence, Dan's sleep and Dan's grumpiness have a strong negative correlation. There is a better way to see the correlation between all types of values in a dataframe.
+
+```{r}
+cor(parenthood)
+```
+
+Now let's take a look at this data called "Anscombe's Quartet"
+
+```{r}
+load( "anscombesquartet.Rdata" )
+cor( X1, Y1 )
+cor( X2, Y2 )
+cor (X3, Y3)
+cor (X4, Y4)
+```
+
+All have nearly the same correlation. Let us now visualize this
+
+```{r}
+scatterplot(X1~Y1, regLine = FALSE, smooth = FALSE)
+```
+
+```{r}
+scatterplot(X2~Y2, regLine = FALSE, smooth = FALSE)
+```
+
+```{r}
+scatterplot(X3~Y3, regLine = FALSE, smooth = FALSE)
+```
+
+```{r}
+scatterplot(X4~Y4, regLine = FALSE, smooth = FALSE)
+```
+
+These plots are visibly different. Hence, correlation values by themselves do not reveal enough information.
+
+Let us now understand the Spearman's Rank Order Correlation Coefficient. Loading data.
+
+```{r}
+load( "effort.Rdata" )
+effort
+```
+
+```{r}
+cor(effort)
+```
+
+```{r}
+scatterplot(effort$hours, effort$grade, regLine = TRUE, smooth = FALSE)
+```
+
+When we want to understand ordinal relationships, the Spearman's correlation may be a much more useful tool.
+
+```{r}
+hours.rank <- rank( effort$hours )   # rank students by hours worked
+grade.rank <- rank( effort$grade )   # rank students by grade received
+
+
+cor( hours.rank, grade.rank )
+```
+
+```{r}
+#Execute this and compare with the correlation coefficient we got above
+cor( effort$hours, effort$grade, method = "spearman")
+```
+
+This essentially implies that the more hours a student studies, it is guaranteed that they will score better.
+
+## Handling Missing Values
+
+Loading a data set with missing values
+
+```{r}
+load( "parenthood2.Rdata" )
+print( parenthood2 )
+```
+
+```{r}
+describe( parenthood2 ) 
+```
+
+Finding correlations
+
+```{r}
+cor(parenthood2)
+```
+
+Why are we getting these values? Because there are values we don't know in our data set. It is not possible to compute means if we don't know certain values. There are two ways we can tackle this - 
+1. By omitting the entire row whenever NA is present
+
+```{r}
+cor(parenthood2, use = "complete.obs")
+```
+
+2.  When calculating correlation, omitting the specific row only in a pairwise manner. That is, if we have a missing value in baby sleep, the row may still be included while calculating correlation between dan.grump and dan.sleep.
+
+```{r}
+cor(parenthood2, use = "pairwise.complete.obs")
+```
+
+This can also be calculated using the lsr package.
+
+```{r}
+library(lsr)
+correlate(parenthood2)
+```
+
+# PART-2: Correlation Plots
+Loading the package
+
+```{r}
+library(ggcorrplot)
+```
+
+```{r}
+data(mtcars) #loading data
+corr <- round(cor(mtcars), 1) #Rounding correlation data to one decimal place
+head(corr[, 1:6]) #Displaying the correlation matrix
+```
+
+```{r}
+# Compute a matrix of correlation p-values
+p.mat <- cor_pmat(mtcars)
+head(p.mat[, 1:4])
+```
+```{r}
+ggcorrplot(corr)
+```
+
+Above is a correlation matrix. In this manner we can visualize the correlation between different value pairs in high dimensional data sets. This uses the default method as square. Let us now try circle. 
+
+```{r}
+ggcorrplot(corr, method = "circle")
+```
+
+This gives you circle plots. Another interesting feature, is that ggcorrplot can perform a heirarchical clustering in the dataset. Values in the same cluster have higher correlations with each other and low correlations with values in other clusters. 
+
+```{r}
+ggcorrplot(corr, hc.order = TRUE, outline.col = "white")
+```
+
+There is redundancy in this plot, since it is a mirror image across the diagonal. Hence, it can be more compactly represented as follows - 
+
+```{r}
+ggcorrplot(corr, hc.order = TRUE, type = "lower",
+     outline.col = "white")
+```
+```{r}
+ggcorrplot(corr, hc.order = TRUE, type = "upper",
+     outline.col = "white")
+```
+
+We can also change the colours and theme of the plots.
+
+```{r}
+ggcorrplot(corr, hc.order = TRUE, type = "lower",
+   outline.col = "white",
+   ggtheme = ggplot2::theme_gray,
+   colors = c("#6D9EC1", "white", "#E46726"))
+```
+
+We can also visualize the specific correlation coefficients.
+
+```{r}
+ggcorrplot(corr, hc.order = TRUE, type = "lower",
+   lab = TRUE)
+```
+
+It may be even more meaningful to include p-values, The following code, when executed, crosses out those values with statistically insignificant correlations.
+
+```{r}
+ggcorrplot(corr, hc.order = TRUE,
+    type = "lower", p.mat = p.mat)
+```
+
+We may also leave them blank.
+
+```{r}
+ggcorrplot(corr, p.mat = p.mat, hc.order = TRUE,
+    type = "lower", insig = "blank")
+```
+

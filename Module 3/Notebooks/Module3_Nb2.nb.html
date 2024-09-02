@@ -11,7 +11,7 @@
 
 
 
-<title>Introduction to R notebooks</title>
+<title>Descriptive Statistics: Scaling and Correlations</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -1746,234 +1746,422 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Introduction to R notebooks</h1>
+<h1 class="title toc-ignore">Descriptive Statistics: Scaling and
+Correlations</h1>
 
 </div>
 
 
 <!-- rnb-text-begin -->
-<div id="welcome-to-statistics-with-r" class="section level3">
-<h3>Welcome to statistics with R!</h3>
-<p>This tutorial notebook is intended to introduce and make you familiar
-with <strong>R notebooks</strong>. Even if you have used R previously,
-you can take a quick glance at the tutorial and might learn something
-new.</p>
-<p>This is an R Markdown notebook file, you might have noticed that this
-file has the format of <em>.Rmd</em>. First things first,</p>
-<div id="what-the-heck-is-markdown" class="section level5">
-<h5>What the heck is Markdown?</h5>
-<p>Markdown is a <a href="https://en.wikipedia.org/wiki/Markup_language">markup language</a>
-for creating formatted text using a plain-text editor. The idea and
-terminology evolved from the “marking up” of paper manuscripts (i.e.,
-the revision instructions by editors), which is traditionally written
-with a red or blue pen on authors’ manuscripts. Markdown using any
-language including R is just a <em>digital</em> version of such blue and
-red pen annotations.</p>
+<p>After taking a first look at our data in the last notebook, now we
+want to start looking at it more closely as per our needs and
+requirements.</p>
+<div id="scaling" class="section level4">
+<h4>Scaling</h4>
+<p>In simple terms, scaling refers to changing size of an object without
+affecting its shape.</p>
+<div id="linear-transformation" class="section level5">
+<h5>Linear Transformation:</h5>
+<p>A linear transformation involves addition, subtraction,
+multiplication, or division with a constant value. For example, if you
+add 1 to the numbers 2, 4, and 6, the resulting numbers (3, 5, and 7)
+are a linear transformation of the original numbers. Linear
+transformations are useful, because they allow you to represent your
+data in a metric that is suitable to you and your audience.</p>
+<p><strong>Centering:</strong></p>
+<p>‘Centering’ is a particularly common linear transformation. This
+linear transfor- mation is frequently applied to continuous predictor
+variables. To center a predictor variable, subtract the mean of that
+predictor variable from each data point. As a result, each data point is
+expressed in terms of how much it is above the mean (positive score) or
+below the mean (negative score). Thus, subtracting the mean out of the
+variable expresses each data point as a mean-deviation score. The value
+zero now has a new meaning for this variable: it is at the ‘center’ of
+the variable’s distribution, namely, the mean.</p>
+<p><strong>Standardizing:</strong></p>
+<p>A second common linear transformation is ‘standardizing’ or
+‘z–scoring’. For standardizing, the centered variable is divided by the
+standard deviation of the sample.</p>
+<p>Let’s look at an example:</p>
+<p>The following are response durations from a psycholinguistic
+experiment:</p>
+<p><code>460ms 480ms 500ms 520ms 540ms</code></p>
+<p>The mean of these five numbers is <code>500ms</code>.</p>
+<p>Centering these numbers results in the following:</p>
+<p><code>− 40ms − 20ms 0ms +20ms + 40ms</code></p>
+<p>The standard deviation (learnt in last notebook) for these numbers is
+<code>~32ms</code>.</p>
+<p>To ‘standardize’, we have to divide the centered data by the standard
+deviation. For example, the first point, <code>–40ms</code>, divided by
+<code>32ms</code>, yields <code>–1.3</code>. Since each data point is
+divided by the same number, this change qualifies as a linear
+transformation.</p>
+<p>As a result of standardization, you get the following numbers
+(rounded to one digit):</p>
+<p><code>−1.3z − 0.6z 0z + 0.6z +1.3z</code></p>
+<p>The raw response duration <code>460ms</code> is <code>–40ms</code>
+(after centering), which corresponds to being <code>1.3</code> standard
+deviations below the mean. Thus, standardization involves re-expressing
+the data in terms of <strong>how many standard deviations they are away
+from the mean</strong>.</p>
 </div>
-<div id="but-what-is-an-r-notebook-then" class="section level5">
-<h5>But what is an R Notebook then?</h5>
-<p>R Notebook is simply an R Markdown document (a document written in
-the <em>language</em> R Markdown) with chunks that can be executed
-independently and interactively, with output visible immediately beneath
-the input. It is an implementation of <a href="https://en.wikipedia.org/wiki/Literate_programming">Literate
-Programming</a> that allows for direct interaction with R while
-producing a reproducible document with publication-quality output. A
-notebook can therefore be thought of as a special execution mode for R
-Markdown documents.</p>
-<p>With the .Rmd file format, you can make such dynamic documents with
-R. In fact, this tutorial file itself is an R Notebook file with both
-plain text (that you’re currently reading) and embeded code (which
-you’ll insert below).</p>
-<p>Before moving to code insertion, so far we’ve learnt that the R
-Notebook (R Markdown document) is written in R markdown (an
-easy-to-write markup language) and contains chunks of embedded R
-code.</p>
-<p>Now if you wish to insert a code chunk, you can do so by clicking the
-<em>Insert Chunk</em> button on the toolbar or you can by press
-<em>Ctrl+Alt+I</em>. (<em>mac: Cmd + option + I</em>). Let’s write our
-first code chunk for printing “hello”. <em>Try it yourself:</em> Insert
-a new code chunk to print “My First Markdown File”.</p>
+<div id="but-why-this-extra-effort" class="section level5">
+<h5>But why this extra effort?</h5>
+<p>Standardizing is a way of getting rid of a variable’s metric. In a
+situation with multiple variables, each variable may have a different
+standard deviation, but by dividing each variable by the respective
+standard deviation, it is possible to convert all variables into a scale
+of <strong>standard units</strong>. This sometimes may help in making
+variables comparable, for example, when assessing the relative impact of
+multiple predictors. For example, if you can imagine we have two
+questionnaires - one for extraversion where you scored 2 out of 10 and
+the other for grumpiness where you scored 35 out of 50, then it doesn’t
+make a lot of sense to try to compare your raw score of 2 on the
+extraversion questionnaire to your raw score of 35 on the grumpiness
+questionnaire. The raw scores for the two variables are “about”
+fundamentally different things, so this would be like comparing apples
+to oranges. But if you standardize them, they will still become
+comparable in some sense.</p>
+<p>Let’s also examine the score of 35 out of 50 for grumpiness. Would
+this mean that you’re 70% grumpy? Instead of interpreting raw data this
+way, it would make more sense if we describe your grumpiness in terms of
+the overall distribution of the grumpiness of humans which is possible
+through standardisation i.e. where do you lie on the grumpiness spectrum
+of the all humans? ;)</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxucHJpbnQoJ0hlbGxvJylcbmBgYFxuYGBgIn0= -->
-<pre class="r"><code>```r
-print(&#39;Hello&#39;)</code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
-
-&lt;!-- rnb-chunk-end --&gt;
-
-
-&lt;!-- rnb-text-begin --&gt;
-
-
-Try executing the inserted chunk(s) by clicking the *Run* button (green arrowhead) within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
-
-##### Some more information on R Markdown
-Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. There can be several different output formats for this markdown file and you can mention it at the start of this file under output:, for R notebooks, the output type is &#39;html document&#39; which outputs a .html file with the same name as of the .Rmd file. You might be already reading this in a .html output file in your browser, if not then you can always *Preview* that html file in you browser to have a look.
-
-To know more about R Markdown you can visit this [link](http://rmarkdown.rstudio.com). 
-
-[R Markdown interface](https://rmarkdown.rstudio.com/lesson-2.html) notebook. 
-
-**_Suggested reading:_** Section 3.2 (R Notebook) and Sections 2.5, 2.6 (Markdown syntax) from the book - [R Markdown: The definitive guide](https://bookdown.org/yihui/rmarkdown/)
-
-#### R Markdown syntax
-The text in an R Markdown document is written with the Markdown syntax. More precisely, it is [Pandoc’s Markdown](https://pandoc.org/MANUAL.html). The following information has been adapted form the above mentioned book.
-
-_Note_ : It is suggested to view the file as HTML document for this section in order to see the effect of formatting. You can do so by clicking the Preview button in the toolbar.
-
-##### Inline formatting
-
-Inline text will be _italic_ if surrounded by underscores or asterisks, e.g., `_text_` or `*text*`. **Bold** text is produced using a pair of double asterisks (`**text**`). A pair of tildes (~) turn text to a subscript (e.g., `H~3~PO~4~` renders H~3~PO~4). A pair of carets (^) produce a superscript (e.g., `Cu^2+^` renders Cu^2+^). 
-
-To mark text as inline code, use a pair of backticks, e.g., `` `code` ``.
-
-Hyperlinks are created using the syntax `[text](link)`, e.g., `[RStudio](https://www.rstudio.com)` will output [RStudio](https://www.rstudio.com). The syntax for images is similar: just add an exclamation mark, e.g., `![alt text or image title](path/to/image)`. Footnotes are put inside the square brackets after a caret `^[]`, e.g., `^[This is a footnote.]`
-
-##### Block level elements
-Section headers can be written after a number of hashtags, e.g.,
-
-`# First-level header`
-
-# First-level header
-
-`## Second-level header`
-
-## Second-level header
-
-`### Third-level header`
-
-### Third-level header
-
-If you do not want a certain heading to be numbered, you can add {-} or {.unnumbered} after the heading, e.g.,
-
-`# Preface {-}`
-
-Unordered list items start with *, -, or +, and you can nest one list within another list by indenting the sub-list, e.g.,
-</code></pre>
-<ul>
-<li>one item</li>
-<li>one item</li>
-<li>one item
-<ul>
-<li>one more item</li>
-<li>one more item</li>
-<li>one more item ```</li>
-</ul></li>
-</ul>
-<p>The output is:</p>
-<ul>
-<li><p>one item</p></li>
-<li><p>one item</p></li>
-<li><p>one item</p>
-<ul>
-<li><p>one more item</p></li>
-<li><p>one more item</p></li>
-<li><p>one more item</p></li>
-</ul></li>
-</ul>
-<p>Ordered list items start with numbers (you can also nest lists within
-lists), e.g.,</p>
-<pre><code>1. the first item
-2. the second item
-3. the third item
-    - one unordered item
-    - one unordered item</code></pre>
-<p>The output does not look too much different with the Markdown
-source:</p>
-<ol style="list-style-type: decimal">
-<li><p>the first item</p></li>
-<li><p>the second item</p></li>
-<li><p>the third item</p>
-<ul>
-<li><p>one unordered item</p></li>
-<li><p>one unordered item</p></li>
-</ul></li>
-</ol>
-<p>Plain code blocks can be written after three or more backticks.</p>
-<pre><code>```
-Just like this
-```</code></pre>
-</div>
-<div id="all-about-code-chunks" class="section level4">
-<h4>All about Code chunks</h4>
-<p>You inserted a code chunk in the beginning and therefore you now know
-that code chunks can be inserted by either using the RStudio toolbar
-(the <code>Insert</code> button) or the keyboard shortcut
-<code>Ctrl + Alt + I</code> (<code>Cmd + Option + I</code> on macOS).
-There are a lot of things you can do in a code chunk: you can produce
-text output, tables, or graphics. You have fine control over all these
-output via chunk options, which can be provided inside the curly braces
-(between <code>```{r and }</code>). For example, you can choose hide
-text output via the chunk option <code>results = &#39;hide&#39;</code>, or set
-the figure height to 4 inches via <code>fig.height = 4</code>. Chunk
-options are separated by commas, e.g.,</p>
-<p><strong>```{r, chunk-label, results=‘hide’,
-fig.height=4}</strong></p>
-<p>A few of the options are:</p>
-<p><code>echo = FALSE</code> Whether to echo the source code in the
-output document (someone may not prefer reading your smart source code
-but only results)</p>
-<p><code>include = FALSE</code> prevents code and results from appearing
-in the finished file. R Markdown still runs the code in the chunk, and
-the results can be used by other chunks.</p>
-<p><code>message = FALSE</code> prevents messages that are generated by
-code from appearing in the finished file.</p>
-<p><code>warning = FALSE</code> prevents warnings that are generated by
-code from appearing in the finished.</p>
-<p><code>fig.cap = &quot;...&quot;</code> adds a caption to graphical results.</p>
-<div id="plotting-figures" class="section level5">
-<h5>Plotting figures:</h5>
-<p>By default, figures produced by R code will be placed immediately
-after the code chunk they were generated from. For example:</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Notice the <code>echo = &#39;FALSE&#39;</code> option added in the code in
-the source file. That is why the code for the above plot is not visible
-in the HTML output file.</p>
-</div>
-<div id="creating-tables" class="section level5">
-<h5>Creating tables</h5>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxua25pdHI6OmthYmxlKGlyaXNbMTo1LCBdLCBjYXB0aW9uID0gJ0EgY2FwdGlvbicpXG5gYGAifQ== -->
-<pre class="r"><code>knitr::kable(iris[1:5, ], caption = &#39;A caption&#39;)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI1RyeSBpdCBvdXQgeW91cnNlbGZcbiNEZWZpbmUgYSB2ZWN0b3Igd2l0aCBHcnVtcGluZXNzIHNjb3JlcyBvZiB5b3UgYW5kIHlvdXIgZnJpZW5kcyBhbmQgZmluZCB0aGUgeiBzY29yZSBmb3IgeW91ciBzZWxmXG5YID0gYygxNSwgMTYsIDE3LCAxOCwgMTgsIDE5LCAyMCkgICAgICAgICAgICAgICAgICAgICAgIFxueiA9IChYIC0gbWVhbihYKSkgLyBzZChYKVxuYGBgIn0= -->
+<pre class="r"><code>#Try it out yourself
+#Define a vector with Grumpiness scores of you and your friends and find the z score for your self
+X = c(15, 16, 17, 18, 18, 19, 20)                       
+z = (X - mean(X)) / sd(X)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>You might have noticed <code>knitr</code> in the above code chunk. So
-let’s briefly know about Knitr here.</p>
+<p><em>Reference: Chapter 5, Winter B.</em></p>
 </div>
-<div id="knitr--" class="section level5">
-<h5>Knitr -</h5>
-<p>It is a package in the programming language R that enables
-integration of R code into LaTeX, LyX, HTML, Markdown, AsciiDoc, and
-reStructuredText documents. <em>Note</em> - Packages will be introduced
-in a separate tutorial.</p>
-<p>In the R Studio toolbar, where you can see the <code>Preview</code>
-button, if you click on the drop down arrow next to it, you will find
-the options <code>Knit to HTML</code>, <code>Knit to PDF</code>,
-<code>Knit to Word</code> etc. When you click the <strong>Knit</strong>
-button the specific output document will be generated that includes both
-content as well as the result of any embedded R code chunks within the
-notebook.</p>
-<p>Before, we end this introductory tutorial, here’s a <a href="https://rmarkdown.rstudio.com/lesson-15.html">cheatsheet</a> for
-working with R Markdown and Notebooks for easy and quick reference.</p>
-<p>Now that you’ve learnt about R Notebooks, you are ready to create
-your own and get started : Go to
-<code>File -&gt; New File -&gt; R Notebook</code>, or if you have opened
-an <code>R markdown</code> file, you can specify the output type as
-<code>html_notebook</code> in the document’s YAML metadata. Have fun
-working with R Notebooks!</p>
+</div>
+<div id="correlation" class="section level4">
+<h4>Correlation</h4>
+<p>So far we have focused entirely on how to construct descriptive
+statistics for a single variable. We haven’t talked about how to
+describe the relationships between variables in the data. To do that, we
+want to talk mostly about the correlation between variables.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2V0d2QoXCIvVXNlcnMvbGVub3ZvMS9EZXNrdG9wL210ZWNoL2NvdXJzZXMvc3RhdHMvRGF0YXNldHMvZGF0YS9cIilcblxuI0xldCdzIGxvYWQgc29tZSBkYXRhXG5sb2FkKCBcInBhcmVudGhvb2QuUmRhdGFcIiApXG53aG8oVFJVRSlcbmBgYCJ9 -->
+<pre class="r"><code>setwd(&quot;/Users/lenovo1/Desktop/mtech/courses/stats/Datasets/data/&quot;)
+
+#Let&#39;s load some data
+load( &quot;parenthood.Rdata&quot; )
+who(TRUE)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI1RyeSBkZXNjcmliZSgpIGZvciB0aGUgYWJvdmUgZGF0YWZyYW1lXG5gYGAifQ== -->
+<pre class="r"><code>#Try describe() for the above dataframe</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0xldCdzIGFsc28gdGFrZSBhIGdyYXBoaWNhbCBsb29rIGF0IHRoZSBkYXRhIFxuaGlzdChwYXJlbnRob29kJGRhbi5zbGVlcClcblxuI1RyeSBwbG90dGluZyBmb3IgdGhlIG90aGVyIDIgdmFyaWFibGVzXG5cbmBgYCJ9 -->
+<pre class="r"><code>#Let&#39;s also take a graphical look at the data 
+hist(parenthood$dan.sleep)
+
+#Try plotting for the other 2 variables
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>But we now want to take a look at the relationship between two
+variables. n order to visualize that, it is better to plot a
+<strong>scatter plot.</strong> (Plotting graphs will be covered in
+detail a separate notebook).</p>
+<p><em>Brief note on Scatterplots:</em></p>
+<p>In this kind of plot, each observation corresponds to one dot: the
+horizontal location of the dot plots the value of the observation on one
+variable, and the vertical location displays its value on the other
+variable. In many situations you don’t really have a clear opinion about
+what the causal relationship is (e.g., does A cause B, or does B cause
+A, or does some other variable C controls both A and B). If that’s the
+case, it doesn’t really matter which variable you plot on the x-axis and
+which one you plot on the y-axis. However, in many situations you do
+have a pretty strong idea which variable you think is most likely to be
+causal, or at least you have some suspicions in that direction. If so,
+then it’s conventional to plot the <strong>cause</strong> variable on
+the <strong>x-axis</strong>, and the <strong>effect</strong> variable on
+the <strong>y-axis</strong>.</p>
+<p>Suppose our goal is to draw a scatterplot displaying the relationship
+between the amount of sleep that Dan gets (dan.sleep) and how grumpy she
+is the next day (dan.grump). <em>Do you suspect a causal relationship
+here?</em></p>
+<p>A simple way to plot these scatter plots is to use the scatterplot()
+function in the car package.</p>
+<p>Let’s load the package and get started.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaW5zdGFsbC5wYWNrYWdlcyhcImNhclwiKVxuaW5zdGFsbC5wYWNrYWdlcyhcIlJjcHBcIilcbmBgYCJ9 -->
+<pre class="r"><code>install.packages(&quot;car&quot;)
+install.packages(&quot;Rcpp&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShjYXIpXG5zY2F0dGVycGxvdCggZGFuLmdydW1wIH4gZGFuLnNsZWVwLCBkYXRhID0gcGFyZW50aG9vZCwgcmVnTGluZSA9IEZBTFNFLCBzbW9vdGggPSBGQUxTRSlcbnNjYXR0ZXJwbG90XG5gYGAifQ== -->
+<pre class="r"><code>library(car)
+scatterplot( dan.grump ~ dan.sleep, data = parenthood, regLine = FALSE, smooth = FALSE)
+scatterplot</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI1Bsb3QgYSBzY2F0dGVyIHBsb3QgZm9yIGJhYnkuc2xlZXAgYW5kIGRhbi5ncnVtcCB2YXJpYWJsZXNcbmBgYCJ9 -->
+<pre class="r"><code>#Plot a scatter plot for baby.sleep and dan.grump variables</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Just by plain observation and comparison, you can see that the
+relationship is qualitatively the same in both cases: more sleep equals
+less grump! However, it’s also pretty obvious that the relationship
+between dan.sleep and dan.grump is stronger than the relationship
+between baby.sleep and dan.grump.</p>
+<p>But what about the plot between baby.sleep and dan.sleep?</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI1Bsb3QgYmFieSBzbGVlcCBhbmQgZGFuIHNsZWVwIGhlcmVcbmBgYCJ9 -->
+<pre class="r"><code>#Plot baby sleep and dan sleep here</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Is the direction of this plot same as the earlier plots? What about
+strength?</p>
+<div id="correlation-coefficient" class="section level5">
+<h5>Correlation coefficient</h5>
+<p>In order to to quantitatively represent the relationships of strength
+and direction we discussed above, we can use correlation
+coefficient.</p>
+<p>The correlation coefficient (or Pearson’s correlation coefficient)
+between two variables X and Y (sometimes denoted <em>r<sub>XY</sub></em>
+) is a measure that varies from -1 to 1. When <em>r</em> = -1 it means
+that we have a perfect negative relationship, and when <em>r</em> = 1 it
+means we have a perfect positive relationship. When <em>r</em> = 0,
+there’s no relationship at all.</p>
+<p>Look at the plots for different <em>r</em> values:</p>
+<div class="float">
+<img src="/Users/lenovo1/Desktop/mtech/courses/stats/Images/fig4.png" alt="Correlation plots" />
+<div class="figcaption">Correlation plots</div>
+</div>
+</div>
+<div id="covariance" class="section level5">
+<h5>Covariance</h5>
+<p>The covariance between two variables X and Y is a generalisation of
+the notion of the variance; it’s a mathematically simple way of
+describing the relationship between two variables:</p>
+<p><span class="math display">\[\begin{align*}
+Cov (X, Y) = \frac{1}{N-1}\sum_{i=1}^{N} (X- \overline{X} ) (Y-
+\overline{Y} )  \\
+\end{align*}\]</span></p>
+<p>Covariance can be understood as an “average cross product” between X
+and Y . The covariance has the nice property that, if X and Y are
+entirely unrelated, then the covariance is exactly zero. If it is
+positive, then the covariance is also positive; and if the relationship
+is negative then the covariance is also negative. But as it has weird
+units (try seeing for yourself), it si difficult to interpret and
+therefore we standardise the covariance, the exact same way that the
+z-score standardises a raw score: by dividing by the standard deviation.
+However, because we have two variables that contribute to the
+covariance, the standardisation only works if we divide by both standard
+deviations.</p>
+<p>This is what we call as the correlation coefficent, <em>r</em>:</p>
+<p><span class="math display">\[\begin{align*}
+
+r~XY~ = \frac{Cov(X,Y)}{\sigma_{X} \sigma_{Y}}
+
+\end{align*}\]</span></p>
+<p>This way, covariance properties are retained and it also becomes
+interpretable.</p>
+<p>Now let’s check out how to code this using cor().</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29yKHggPSBwYXJlbnRob29kJGRhbi5zbGVlcCwgeSA9IHBhcmVudGhvb2QkZGFuLmdydW1wKVxuXG4jVHJ5IGdpdmluZyB0aGUgZW50aXJlIGRhdGFmcmFtZSAncGFyZW50aG9vZCcgYXMgaW5wdXQgaW4gY29yKClcbmBgYCJ9 -->
+<pre class="r"><code>cor(x = parenthood$dan.sleep, y = parenthood$dan.grump)
+
+#Try giving the entire dataframe &#39;parenthood&#39; as input in cor()</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>What did you find?</p>
+</div>
+<div id="what-does-r-0.4-mean" class="section level5">
+<h5>What does r = 0.4 mean?</h5>
+<p>It really depends on what you want to use the data for, and on how
+strong the correlations in your field tend to be.</p>
+<div class="float">
+<img src="/Users/lenovo1/Desktop/mtech/courses/stats/Images/fig5.png" alt="Correlation coefficient interpretation table" />
+<div class="figcaption">Correlation coefficient interpretation
+table</div>
+</div>
+<p>Now let’s take a look at this data called “Anscombe’s Quartet”</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubG9hZCggXCJhbnNjb21iZXNxdWFydGV0LlJkYXRhXCIgKVxuY29yKCBYMSwgWTEgKVxuY29yKCBYMiwgWTIgKVxuY29yIChYMywgWTMpXG5jb3IgKFg0LCBZNClcbmBgYCJ9 -->
+<pre class="r"><code>load( &quot;anscombesquartet.Rdata&quot; )
+cor( X1, Y1 )
+cor( X2, Y2 )
+cor (X3, Y3)
+cor (X4, Y4)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Were the correlation coefficients same?</p>
+<p>Now try plotting them.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2NhdHRlcnBsb3QoKVxuYGBgIn0= -->
+<pre class="r"><code>scatterplot()</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Therefore, remember to always look at the scatterplot before
+attaching any interpretation to the data!</p>
+<p>If we have to properly define the role of Pearson’s coefficient, we
+can say that it actually measures the strength of the linear
+relationship between two variables. In other words, it gives a measure
+of the extent to which the data all tend to fall on a single, perfectly
+straight line.</p>
+</div>
+<div id="spearmans-rank-order-correlation-coefficient" class="section level5">
+<h5>Spearman’s Rank Order Correlation Coefficient</h5>
+<p>But let’s take a look at another dataset and find correlation between
+its variables.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2V0d2QoXCIvVXNlcnMvbGVub3ZvMS9EZXNrdG9wL210ZWNoL2NvdXJzZXMvc3RhdHMvRGF0YXNldHMvZGF0YS9cIilcbmxvYWQoIFwiZWZmb3J0LlJkYXRhXCIgKVxuZWZmb3J0XG5jb3IoIGVmZm9ydCRob3VycywgZWZmb3J0JGdyYWRlIClcbmBgYCJ9 -->
+<pre class="r"><code>setwd(&quot;/Users/lenovo1/Desktop/mtech/courses/stats/Datasets/data/&quot;)
+load( &quot;effort.Rdata&quot; )
+effort
+cor( effort$hours, effort$grade )</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>If you plot this -</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2NhdHRlcnBsb3QoZWZmb3J0JGhvdXJzLCBlZmZvcnQkZ3JhZGUsIHJlZ0xpbmUgPSBUUlVFLCBzbW9vdGggPSBGQUxTRSlcbmBgYCJ9 -->
+<pre class="r"><code>scatterplot(effort$hours, effort$grade, regLine = TRUE, smooth = FALSE)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>The correlation <em>r</em> = 0.91 we get above doe snot represent the
+actual relationship the plot is depicting. What we’re looking for is
+something that captures the fact that there is a perfect <strong>ordinal
+relationship</strong> here. That is, if student 1 works more hours than
+student 2, then we can guarantee that student 1 will get the better
+grade.</p>
+<p>If we’re looking for ordinal relationships, all we have to do is
+treat the data as if it were ordinal scale! So, instead of measuring
+effort in terms of “hours worked”, let’s rank all 10 of the students in
+order of hours worked. That is, student 1 did the least work out of
+anyone (2 hours) so they get the lowest rank (rank = 1). Student 4 was
+the next laziest, putting in only 6 hours of work in over the whole
+semester, so they get the next lowest rank (rank = 2).</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaG91cnMucmFuayA8LSByYW5rKCBlZmZvcnQkaG91cnMgKSAgICMgcmFuayBzdHVkZW50cyBieSBob3VycyB3b3JrZWRcbmdyYWRlLnJhbmsgPC0gcmFuayggZWZmb3J0JGdyYWRlICkgICAjIHJhbmsgc3R1ZGVudHMgYnkgZ3JhZGUgcmVjZWl2ZWRcblxuI05vdyB0cnkgY29yKCkgZnVuY3Rpb24gZm9yIHRoZXNlXG5jb3IoIGhvdXJzLnJhbmssIGdyYWRlLnJhbmsgKVxuYGBgIn0= -->
+<pre class="r"><code>hours.rank &lt;- rank( effort$hours )   # rank students by hours worked
+grade.rank &lt;- rank( effort$grade )   # rank students by grade received
+
+#Now try cor() function for these
+cor( hours.rank, grade.rank )</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Now the correlation coefficient we get is different from the
+Perason’s correlation coefficient <em>r</em> we got earlier. This new
+correlation coefficient that we got is called ‘<strong>Spearman’s
+Correlation Coefficient</strong>’, denoted by <span class="math inline">\(\rho\)</span>.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0V4ZWN1dGUgdGhpcyBhbmQgY29tcGFyZSB3aXRoIHRoZSBjb3JyZWxhdGlvbiBjb2VmZmljaWVudCB3ZSBnb3QgYWJvdmVcbmNvciggZWZmb3J0JGhvdXJzLCBlZmZvcnQkZ3JhZGUsIG1ldGhvZCA9IFwic3BlYXJtYW5cIilcbmBgYCJ9 -->
+<pre class="r"><code>#Execute this and compare with the correlation coefficient we got above
+cor( effort$hours, effort$grade, method = &quot;spearman&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="handling-missing-values" class="section level5">
+<h5>Handling missing values</h5>
+<p>We’ve seen in earlier lectures that there could be missing values in
+data which are represented by <code>NA</code> in R. One easy way to
+remove them is using <code>na.rm = TRUE</code> as argument in many
+functions.</p>
+<p>But what if we have missing values in a dataframe where we have to
+find correlations across variables.</p>
+<p>Let’s look at such a dataset.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubG9hZCggXCJwYXJlbnRob29kMi5SZGF0YVwiIClcbnByaW50KCBwYXJlbnRob29kMiApXG5kZXNjcmliZSggcGFyZW50aG9vZDIgKSBcbiNDaGVjayBob3cgbWFueSBtaXNzaW5nIHZhbHVlcyBhcmUgdGhlcmUgZm9yIGVhY2ggdmFyaWFibGUgLSBjb21wYXJlIHRoZSB2YWx1ZXMgaW4gJ24nIHdpdGggdGhlIG51bWJlciBvZiBkYXlzLlxuYGBgIn0= -->
+<pre class="r"><code>load( &quot;parenthood2.Rdata&quot; )
+print( parenthood2 )
+describe( parenthood2 ) 
+#Check how many missing values are there for each variable - compare the values in &#39;n&#39; with the number of days.</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Now, let’s try finding correlations for this dataframe.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29yKHBhcmVudGhvb2QyKVxuYGBgIn0= -->
+<pre class="r"><code>cor(parenthood2)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>In order top overcome this problem, we can use <code>use</code> as an
+argument in the cor() function. Try out the following.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29yKHBhcmVudGhvb2QyLCB1c2UgPSBcImNvbXBsZXRlLm9ic1wiKVxuY29yKHBhcmVudGhvb2QyLCB1c2UgPSBcInBhaXJ3aXNlLmNvbXBsZXRlLm9ic1wiKVxuYGBgIn0= -->
+<pre class="r"><code>cor(parenthood2, use = &quot;complete.obs&quot;)
+cor(parenthood2, use = &quot;pairwise.complete.obs&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>When we choose <code>use = &quot;complete.obs&quot;</code>, R will completely
+ignore all cases (i.e., all rows in our parenthood2 data frame) that
+have any missing values at all. For eg., if you choose use =
+“complete.obs” R will ignore that row completely: that is, even when
+it’s trying to calculate the correlation between dan.sleep and
+dan.grump, observation 1 will be ignored, because the value of
+baby.sleep is missing for that observation.</p>
+<p>Whereas when we set <code>use = &quot;pairwise.complete.obs&quot;</code> R only
+looks at the variables that it’s trying to correlate when determining
+what to drop. So, for instance, since the only missing value for
+observation 1 of parenthood2 is for baby.sleep R will only drop
+observation 1 when baby.sleep is one of the variables involved: and so R
+keeps observation 1 when trying to correlate dan.sleep and
+dan.grump.</p>
+<p>The above operation can also be performed by another function called
+<code>correlate()</code> in <code>lsr</code> package.</p>
+<p>Try it out.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI1RyeSBjb3JyZWxhdGUoKSBmb3IgcGFyZW50aG9vZDIgaGVyZVxuYGBgIn0= -->
+<pre class="r"><code>#Try correlate() for parenthood2 here</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p><em>Reference : Chapter 5, D. Navarro</em></p>
+<p>That’s all folks!</p>
 <!-- rnb-text-end -->
 </div>
 </div>
-</div>
 
-<div id="rmd-source-code">LS0tDQojQWRkZWQgYSBjb21tZW50DQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQotLS0NCnRpdGxlOiAiSW50cm9kdWN0aW9uIHRvIFIgbm90ZWJvb2tzIg0Kb3V0cHV0OiBodG1sX2RvY3VtZW50DQotLS0NCg0KIyMjIFdlbGNvbWUgdG8gc3RhdGlzdGljcyB3aXRoIFIhDQoNCg0KVGhpcyB0dXRvcmlhbCBub3RlYm9vayBpcyBpbnRlbmRlZCB0byBpbnRyb2R1Y2UgYW5kIG1ha2UgeW91IGZhbWlsaWFyIHdpdGggKipSIG5vdGVib29rcyoqLiBFdmVuIGlmIHlvdSBoYXZlIHVzZWQgUiBwcmV2aW91c2x5LCB5b3UgY2FuIHRha2UgYSBxdWljayBnbGFuY2UgYXQgdGhlIHR1dG9yaWFsIGFuZCBtaWdodCBsZWFybiBzb21ldGhpbmcgbmV3Lg0KDQpUaGlzIGlzIGFuIFIgTWFya2Rvd24gbm90ZWJvb2sgZmlsZSwgeW91IG1pZ2h0IGhhdmUgbm90aWNlZCB0aGF0IHRoaXMgZmlsZSBoYXMgdGhlIGZvcm1hdCBvZiAqLlJtZCouDQpGaXJzdCB0aGluZ3MgZmlyc3QsDQoNCiMjIyMjIFdoYXQgdGhlIGhlY2sgaXMgTWFya2Rvd24/DQpNYXJrZG93biBpcyBhIFttYXJrdXAgbGFuZ3VhZ2VdKGh0dHBzOi8vZW4ud2lraXBlZGlhLm9yZy93aWtpL01hcmt1cF9sYW5ndWFnZSkgZm9yIGNyZWF0aW5nIGZvcm1hdHRlZCB0ZXh0IHVzaW5nIGEgcGxhaW4tdGV4dCBlZGl0b3IuIFRoZSBpZGVhIGFuZCB0ZXJtaW5vbG9neSBldm9sdmVkIGZyb20gdGhlICJtYXJraW5nIHVwIiBvZiBwYXBlciBtYW51c2NyaXB0cyAoaS5lLiwgdGhlIHJldmlzaW9uIGluc3RydWN0aW9ucyBieSBlZGl0b3JzKSwgd2hpY2ggaXMgdHJhZGl0aW9uYWxseSB3cml0dGVuIHdpdGggYSByZWQgb3IgYmx1ZSBwZW4gb24gYXV0aG9ycycgbWFudXNjcmlwdHMuIE1hcmtkb3duIHVzaW5nIGFueSBsYW5ndWFnZSBpbmNsdWRpbmcgUiBpcyBqdXN0IGEgKmRpZ2l0YWwqIHZlcnNpb24gb2Ygc3VjaCBibHVlIGFuZCByZWQgcGVuIGFubm90YXRpb25zLg0KDQojIyMjIyBCdXQgd2hhdCBpcyBhbiBSIE5vdGVib29rIHRoZW4/DQpSIE5vdGVib29rIGlzIHNpbXBseSBhbiBSIE1hcmtkb3duIGRvY3VtZW50IChhIGRvY3VtZW50IHdyaXR0ZW4gaW4gdGhlICpsYW5ndWFnZSogUiBNYXJrZG93bikgd2l0aCBjaHVua3MgdGhhdCBjYW4gYmUgZXhlY3V0ZWQgaW5kZXBlbmRlbnRseSBhbmQgaW50ZXJhY3RpdmVseSwgd2l0aCBvdXRwdXQgdmlzaWJsZSBpbW1lZGlhdGVseSBiZW5lYXRoIHRoZSBpbnB1dC4gSXQgaXMgYW4gaW1wbGVtZW50YXRpb24gb2YgW0xpdGVyYXRlIFByb2dyYW1taW5nXShodHRwczovL2VuLndpa2lwZWRpYS5vcmcvd2lraS9MaXRlcmF0ZV9wcm9ncmFtbWluZykgdGhhdCBhbGxvd3MgZm9yIGRpcmVjdCBpbnRlcmFjdGlvbiB3aXRoIFIgd2hpbGUgcHJvZHVjaW5nIGEgcmVwcm9kdWNpYmxlIGRvY3VtZW50IHdpdGggcHVibGljYXRpb24tcXVhbGl0eSBvdXRwdXQuIEEgbm90ZWJvb2sgY2FuIHRoZXJlZm9yZSBiZSB0aG91Z2h0IG9mIGFzIGEgc3BlY2lhbCBleGVjdXRpb24gbW9kZSBmb3IgUiBNYXJrZG93biBkb2N1bWVudHMuDQoNCldpdGggdGhlIC5SbWQgZmlsZSBmb3JtYXQsIHlvdSBjYW4gbWFrZSBzdWNoIGR5bmFtaWMgZG9jdW1lbnRzIHdpdGggUi4gSW4gZmFjdCwgdGhpcyB0dXRvcmlhbCBmaWxlIGl0c2VsZiBpcyBhbiBSIE5vdGVib29rIGZpbGUgd2l0aCBib3RoIHBsYWluIHRleHQgKHRoYXQgeW91J3JlIGN1cnJlbnRseSByZWFkaW5nKSBhbmQgZW1iZWRlZCBjb2RlICh3aGljaCB5b3UnbGwgaW5zZXJ0IGJlbG93KS4gDQoNCkJlZm9yZSBtb3ZpbmcgdG8gY29kZSBpbnNlcnRpb24sIHNvIGZhciB3ZSd2ZSBsZWFybnQgdGhhdCB0aGUgUiBOb3RlYm9vayAoUiBNYXJrZG93biBkb2N1bWVudCkgIGlzIHdyaXR0ZW4gaW4gUiBtYXJrZG93biAoYW4gZWFzeS10by13cml0ZSBtYXJrdXAgbGFuZ3VhZ2UpIGFuZCBjb250YWlucyBjaHVua3Mgb2YgZW1iZWRkZWQgUiBjb2RlLiANCg0KTm93IGlmIHlvdSB3aXNoIHRvIGluc2VydCBhIGNvZGUgY2h1bmssIHlvdSBjYW4gZG8gc28gYnkgY2xpY2tpbmcgdGhlICpJbnNlcnQgQ2h1bmsqIGJ1dHRvbiBvbiB0aGUgdG9vbGJhciBvciB5b3UgY2FuIGJ5IHByZXNzICpDdHJsK0FsdCtJKi4gKCptYWM6IENtZCArIG9wdGlvbiArIEkqKS4gTGV0J3Mgd3JpdGUgb3VyIGZpcnN0IGNvZGUgY2h1bmsgZm9yIHByaW50aW5nICJoZWxsbyIuICpUcnkgaXQgeW91cnNlbGY6KiBJbnNlcnQgYSBuZXcgY29kZSBjaHVuayB0byBwcmludCAiTXkgRmlyc3QgTWFya2Rvd24gRmlsZSIuDQpgYGB7cn0NCnByaW50KCdIZWxsbycpDQpgYGANCg0KVHJ5IGV4ZWN1dGluZyB0aGUgaW5zZXJ0ZWQgY2h1bmsocykgYnkgY2xpY2tpbmcgdGhlICpSdW4qIGJ1dHRvbiAoZ3JlZW4gYXJyb3doZWFkKSB3aXRoaW4gdGhlIGNodW5rIG9yIGJ5IHBsYWNpbmcgeW91ciBjdXJzb3IgaW5zaWRlIGl0IGFuZCBwcmVzc2luZyAqQ3RybCtTaGlmdCtFbnRlciouIA0KDQojIyMjIyBTb21lIG1vcmUgaW5mb3JtYXRpb24gb24gUiBNYXJrZG93bg0KTWFya2Rvd24gaXMgYSBzaW1wbGUgZm9ybWF0dGluZyBzeW50YXggZm9yIGF1dGhvcmluZyBIVE1MLCBQREYsIGFuZCBNUyBXb3JkIGRvY3VtZW50cy4gVGhlcmUgY2FuIGJlIHNldmVyYWwgZGlmZmVyZW50IG91dHB1dCBmb3JtYXRzIGZvciB0aGlzIG1hcmtkb3duIGZpbGUgYW5kIHlvdSBjYW4gbWVudGlvbiBpdCBhdCB0aGUgc3RhcnQgb2YgdGhpcyBmaWxlIHVuZGVyIG91dHB1dDosIGZvciBSIG5vdGVib29rcywgdGhlIG91dHB1dCB0eXBlIGlzICdodG1sIGRvY3VtZW50JyB3aGljaCBvdXRwdXRzIGEgLmh0bWwgZmlsZSB3aXRoIHRoZSBzYW1lIG5hbWUgYXMgb2YgdGhlIC5SbWQgZmlsZS4gWW91IG1pZ2h0IGJlIGFscmVhZHkgcmVhZGluZyB0aGlzIGluIGEgLmh0bWwgb3V0cHV0IGZpbGUgaW4geW91ciBicm93c2VyLCBpZiBub3QgdGhlbiB5b3UgY2FuIGFsd2F5cyAqUHJldmlldyogdGhhdCBodG1sIGZpbGUgaW4geW91IGJyb3dzZXIgdG8gaGF2ZSBhIGxvb2suDQoNClRvIGtub3cgbW9yZSBhYm91dCBSIE1hcmtkb3duIHlvdSBjYW4gdmlzaXQgdGhpcyBbbGlua10oaHR0cDovL3JtYXJrZG93bi5yc3R1ZGlvLmNvbSkuIA0KDQpbUiBNYXJrZG93biBpbnRlcmZhY2VdKGh0dHBzOi8vcm1hcmtkb3duLnJzdHVkaW8uY29tL2xlc3Nvbi0yLmh0bWwpIG5vdGVib29rLiANCg0KKipfU3VnZ2VzdGVkIHJlYWRpbmc6XyoqIFNlY3Rpb24gMy4yIChSIE5vdGVib29rKSBhbmQgU2VjdGlvbnMgMi41LCAyLjYgKE1hcmtkb3duIHN5bnRheCkgZnJvbSB0aGUgYm9vayAtIFtSIE1hcmtkb3duOiBUaGUgZGVmaW5pdGl2ZSBndWlkZV0oaHR0cHM6Ly9ib29rZG93bi5vcmcveWlodWkvcm1hcmtkb3duLykNCg0KIyMjIyBSIE1hcmtkb3duIHN5bnRheA0KVGhlIHRleHQgaW4gYW4gUiBNYXJrZG93biBkb2N1bWVudCBpcyB3cml0dGVuIHdpdGggdGhlIE1hcmtkb3duIHN5bnRheC4gTW9yZSBwcmVjaXNlbHksIGl0IGlzIFtQYW5kb2PigJlzIE1hcmtkb3duXShodHRwczovL3BhbmRvYy5vcmcvTUFOVUFMLmh0bWwpLiBUaGUgZm9sbG93aW5nIGluZm9ybWF0aW9uIGhhcyBiZWVuIGFkYXB0ZWQgZm9ybSB0aGUgYWJvdmUgbWVudGlvbmVkIGJvb2suDQoNCl9Ob3RlXyA6IEl0IGlzIHN1Z2dlc3RlZCB0byB2aWV3IHRoZSBmaWxlIGFzIEhUTUwgZG9jdW1lbnQgZm9yIHRoaXMgc2VjdGlvbiBpbiBvcmRlciB0byBzZWUgdGhlIGVmZmVjdCBvZiBmb3JtYXR0aW5nLiBZb3UgY2FuIGRvIHNvIGJ5IGNsaWNraW5nIHRoZSBQcmV2aWV3IGJ1dHRvbiBpbiB0aGUgdG9vbGJhci4NCg0KIyMjIyMgSW5saW5lIGZvcm1hdHRpbmcNCg0KSW5saW5lIHRleHQgd2lsbCBiZSBfaXRhbGljXyBpZiBzdXJyb3VuZGVkIGJ5IHVuZGVyc2NvcmVzIG9yIGFzdGVyaXNrcywgZS5nLiwgYF90ZXh0X2Agb3IgYCp0ZXh0KmAuICoqQm9sZCoqIHRleHQgaXMgcHJvZHVjZWQgdXNpbmcgYSBwYWlyIG9mIGRvdWJsZSBhc3Rlcmlza3MgKGAqKnRleHQqKmApLiBBIHBhaXIgb2YgdGlsZGVzICh+KSB0dXJuIHRleHQgdG8gYSBzdWJzY3JpcHQgKGUuZy4sIGBIfjN+UE9+NH5gIHJlbmRlcnMgSH4zflBPfjQpLiBBIHBhaXIgb2YgY2FyZXRzICheKSBwcm9kdWNlIGEgc3VwZXJzY3JpcHQgKGUuZy4sIGBDdV4yK15gIHJlbmRlcnMgQ3VeMiteKS4gDQoNClRvIG1hcmsgdGV4dCBhcyBpbmxpbmUgY29kZSwgdXNlIGEgcGFpciBvZiBiYWNrdGlja3MsIGUuZy4sIGBgIGBjb2RlYCBgYC4NCg0KSHlwZXJsaW5rcyBhcmUgY3JlYXRlZCB1c2luZyB0aGUgc3ludGF4IGBbdGV4dF0obGluaylgLCBlLmcuLCBgW1JTdHVkaW9dKGh0dHBzOi8vd3d3LnJzdHVkaW8uY29tKWAgd2lsbCBvdXRwdXQgW1JTdHVkaW9dKGh0dHBzOi8vd3d3LnJzdHVkaW8uY29tKS4gVGhlIHN5bnRheCBmb3IgaW1hZ2VzIGlzIHNpbWlsYXI6IGp1c3QgYWRkIGFuIGV4Y2xhbWF0aW9uIG1hcmssIGUuZy4sIGAhW2FsdCB0ZXh0IG9yIGltYWdlIHRpdGxlXShwYXRoL3RvL2ltYWdlKWAuIEZvb3Rub3RlcyBhcmUgcHV0IGluc2lkZSB0aGUgc3F1YXJlIGJyYWNrZXRzIGFmdGVyIGEgY2FyZXQgYF5bXWAsIGUuZy4sIGBeW1RoaXMgaXMgYSBmb290bm90ZS5dYA0KDQojIyMjIyBCbG9jayBsZXZlbCBlbGVtZW50cw0KU2VjdGlvbiBoZWFkZXJzIGNhbiBiZSB3cml0dGVuIGFmdGVyIGEgbnVtYmVyIG9mIGhhc2h0YWdzLCBlLmcuLA0KDQpgIyBGaXJzdC1sZXZlbCBoZWFkZXJgDQoNCiMgRmlyc3QtbGV2ZWwgaGVhZGVyDQoNCmAjIyBTZWNvbmQtbGV2ZWwgaGVhZGVyYA0KDQojIyBTZWNvbmQtbGV2ZWwgaGVhZGVyDQoNCmAjIyMgVGhpcmQtbGV2ZWwgaGVhZGVyYA0KDQojIyMgVGhpcmQtbGV2ZWwgaGVhZGVyDQoNCklmIHlvdSBkbyBub3Qgd2FudCBhIGNlcnRhaW4gaGVhZGluZyB0byBiZSBudW1iZXJlZCwgeW91IGNhbiBhZGQgey19IG9yIHsudW5udW1iZXJlZH0gYWZ0ZXIgdGhlIGhlYWRpbmcsIGUuZy4sDQoNCmAjIFByZWZhY2Ugey19YA0KDQpVbm9yZGVyZWQgbGlzdCBpdGVtcyBzdGFydCB3aXRoICosIC0sIG9yICssIGFuZCB5b3UgY2FuIG5lc3Qgb25lIGxpc3Qgd2l0aGluIGFub3RoZXIgbGlzdCBieSBpbmRlbnRpbmcgdGhlIHN1Yi1saXN0LCBlLmcuLA0KDQpgYGANCi0gb25lIGl0ZW0NCi0gb25lIGl0ZW0NCi0gb25lIGl0ZW0NCiAgICAtIG9uZSBtb3JlIGl0ZW0NCiAgICAtIG9uZSBtb3JlIGl0ZW0NCiAgICAtIG9uZSBtb3JlIGl0ZW0NCmBgYA0KDQpUaGUgb3V0cHV0IGlzOg0KDQotIG9uZSBpdGVtDQoNCi0gb25lIGl0ZW0NCg0KLSBvbmUgaXRlbQ0KDQogIC0gb25lIG1vcmUgaXRlbQ0KICANCiAgLSBvbmUgbW9yZSBpdGVtDQogIA0KICAtIG9uZSBtb3JlIGl0ZW0NCg0KT3JkZXJlZCBsaXN0IGl0ZW1zIHN0YXJ0IHdpdGggbnVtYmVycyAoeW91IGNhbiBhbHNvIG5lc3QgbGlzdHMgd2l0aGluIGxpc3RzKSwgZS5nLiwNCg0KYGBgDQoxLiB0aGUgZmlyc3QgaXRlbQ0KMi4gdGhlIHNlY29uZCBpdGVtDQozLiB0aGUgdGhpcmQgaXRlbQ0KICAgIC0gb25lIHVub3JkZXJlZCBpdGVtDQogICAgLSBvbmUgdW5vcmRlcmVkIGl0ZW0NCmBgYA0KDQpUaGUgb3V0cHV0IGRvZXMgbm90IGxvb2sgdG9vIG11Y2ggZGlmZmVyZW50IHdpdGggdGhlIE1hcmtkb3duIHNvdXJjZToNCg0KMS4gdGhlIGZpcnN0IGl0ZW0NCg0KMi4gdGhlIHNlY29uZCBpdGVtDQoNCjMuIHRoZSB0aGlyZCBpdGVtDQoNCiAgICAtIG9uZSB1bm9yZGVyZWQgaXRlbQ0KICAgIA0KICAgIC0gb25lIHVub3JkZXJlZCBpdGVtDQogICAgDQpQbGFpbiBjb2RlIGJsb2NrcyBjYW4gYmUgd3JpdHRlbiBhZnRlciB0aHJlZSBvciBtb3JlIGJhY2t0aWNrcy4NCmBgYGANCmBgYA0KSnVzdCBsaWtlIHRoaXMNCmBgYA0KYGBgYA0KDQojIyMjIEFsbCBhYm91dCBDb2RlIGNodW5rcw0KWW91IGluc2VydGVkIGEgY29kZSBjaHVuayBpbiB0aGUgYmVnaW5uaW5nIGFuZCB0aGVyZWZvcmUgeW91IG5vdyBrbm93IHRoYXQgY29kZSBjaHVua3MgY2FuIGJlIGluc2VydGVkIGJ5IGVpdGhlciB1c2luZyB0aGUgUlN0dWRpbyB0b29sYmFyICh0aGUgYEluc2VydGAgYnV0dG9uKSBvciB0aGUga2V5Ym9hcmQgc2hvcnRjdXQgYEN0cmwgKyBBbHQgKyBJYCAoYENtZCArIE9wdGlvbiArIElgIG9uIG1hY09TKS4gVGhlcmUgYXJlIGEgbG90IG9mIHRoaW5ncyB5b3UgY2FuIGRvIGluIGEgY29kZSBjaHVuazogeW91IGNhbiBwcm9kdWNlIHRleHQgb3V0cHV0LCB0YWJsZXMsIG9yIGdyYXBoaWNzLiBZb3UgaGF2ZSBmaW5lIGNvbnRyb2wgb3ZlciBhbGwgdGhlc2Ugb3V0cHV0IHZpYSBjaHVuayBvcHRpb25zLCB3aGljaCBjYW4gYmUgcHJvdmlkZWQgaW5zaWRlIHRoZSBjdXJseSBicmFjZXMgKGJldHdlZW4gYGBgYCBgYGB7ciBhbmQgfWBgYGApLiBGb3IgZXhhbXBsZSwgeW91IGNhbiBjaG9vc2UgaGlkZSB0ZXh0IG91dHB1dCB2aWEgdGhlIGNodW5rIG9wdGlvbiBgcmVzdWx0cyA9ICdoaWRlJ2AsIG9yIHNldCB0aGUgZmlndXJlIGhlaWdodCB0byA0IGluY2hlcyB2aWEgYGZpZy5oZWlnaHQgPSA0YC4gQ2h1bmsgb3B0aW9ucyBhcmUgc2VwYXJhdGVkIGJ5IGNvbW1hcywgZS5nLiwNCg0KKipgYGB7ciwgY2h1bmstbGFiZWwsIHJlc3VsdHM9J2hpZGUnLCBmaWcuaGVpZ2h0PTR9KioNCg0KQSBmZXcgb2YgdGhlIG9wdGlvbnMgYXJlOg0KDQpgZWNobyA9IEZBTFNFYCBXaGV0aGVyIHRvIGVjaG8gdGhlIHNvdXJjZSBjb2RlIGluIHRoZSBvdXRwdXQgZG9jdW1lbnQgKHNvbWVvbmUgbWF5IG5vdCBwcmVmZXIgcmVhZGluZyB5b3VyIHNtYXJ0IHNvdXJjZSBjb2RlIGJ1dCBvbmx5IHJlc3VsdHMpDQoNCmBpbmNsdWRlID0gRkFMU0VgIHByZXZlbnRzIGNvZGUgYW5kIHJlc3VsdHMgZnJvbSBhcHBlYXJpbmcgaW4gdGhlIGZpbmlzaGVkIGZpbGUuIFIgTWFya2Rvd24gc3RpbGwgcnVucyB0aGUgY29kZSBpbiB0aGUgY2h1bmssIGFuZCB0aGUgcmVzdWx0cyBjYW4gYmUgdXNlZCBieSBvdGhlciBjaHVua3MuDQoNCmBtZXNzYWdlID0gRkFMU0VgIHByZXZlbnRzIG1lc3NhZ2VzIHRoYXQgYXJlIGdlbmVyYXRlZCBieSBjb2RlIGZyb20gYXBwZWFyaW5nIGluIHRoZSBmaW5pc2hlZCBmaWxlLg0KDQpgd2FybmluZyA9IEZBTFNFYCBwcmV2ZW50cyB3YXJuaW5ncyB0aGF0IGFyZSBnZW5lcmF0ZWQgYnkgY29kZSBmcm9tIGFwcGVhcmluZyBpbiB0aGUgZmluaXNoZWQuDQoNCmBmaWcuY2FwID0gIi4uLiJgIGFkZHMgYSBjYXB0aW9uIHRvIGdyYXBoaWNhbCByZXN1bHRzLg0KDQojIyMjIyBQbG90dGluZyBmaWd1cmVzOg0KQnkgZGVmYXVsdCwgZmlndXJlcyBwcm9kdWNlZCBieSBSIGNvZGUgd2lsbCBiZSBwbGFjZWQgaW1tZWRpYXRlbHkgYWZ0ZXIgdGhlIGNvZGUgY2h1bmsgdGhleSB3ZXJlIGdlbmVyYXRlZCBmcm9tLiBGb3IgZXhhbXBsZToNCg0KYGBge3IgcHJlc3N1cmUsIGVjaG89RkFMU0V9DQpwbG90KHByZXNzdXJlKQ0KYGBgDQpOb3RpY2UgdGhlIGBlY2hvID0gJ0ZBTFNFJ2Agb3B0aW9uIGFkZGVkIGluIHRoZSBjb2RlIGluIHRoZSBzb3VyY2UgZmlsZS4gVGhhdCBpcyB3aHkgdGhlIGNvZGUgZm9yIHRoZSBhYm92ZSBwbG90IGlzIG5vdCB2aXNpYmxlIGluIHRoZSBIVE1MIG91dHB1dCBmaWxlLg0KDQojIyMjIyBDcmVhdGluZyB0YWJsZXMNCg0KYGBge3IgdGFibGVzLW10Y2Fyc30NCmtuaXRyOjprYWJsZShpcmlzWzE6NSwgXSwgY2FwdGlvbiA9ICdBIGNhcHRpb24nKQ0KYGBgDQoNCllvdSBtaWdodCBoYXZlIG5vdGljZWQgYGtuaXRyYCBpbiB0aGUgYWJvdmUgY29kZSBjaHVuay4gU28gbGV0J3MgYnJpZWZseSBrbm93IGFib3V0IEtuaXRyIGhlcmUuIA0KDQojIyMjIyBLbml0ciAtIA0KSXQgaXMgYSBwYWNrYWdlIGluIHRoZSBwcm9ncmFtbWluZyBsYW5ndWFnZSBSIHRoYXQgZW5hYmxlcyBpbnRlZ3JhdGlvbiBvZiBSIGNvZGUgaW50byBMYVRlWCwgTHlYLCBIVE1MLCBNYXJrZG93biwgQXNjaWlEb2MsIGFuZCByZVN0cnVjdHVyZWRUZXh0IGRvY3VtZW50cy4gX05vdGVfIC0gUGFja2FnZXMgd2lsbCBiZSBpbnRyb2R1Y2VkIGluIGEgc2VwYXJhdGUgdHV0b3JpYWwuDQoNCkluIHRoZSBSIFN0dWRpbyB0b29sYmFyLCB3aGVyZSB5b3UgY2FuIHNlZSB0aGUgYFByZXZpZXdgIGJ1dHRvbiwgaWYgeW91IGNsaWNrIG9uIHRoZSBkcm9wIGRvd24gYXJyb3cgbmV4dCB0byBpdCwgeW91IHdpbGwgZmluZCB0aGUgb3B0aW9ucyBgS25pdCB0byBIVE1MYCwgYEtuaXQgdG8gUERGYCwgYEtuaXQgdG8gV29yZGAgZXRjLiBXaGVuIHlvdSBjbGljayB0aGUgKipLbml0KiogYnV0dG9uIHRoZSBzcGVjaWZpYyBvdXRwdXQgZG9jdW1lbnQgd2lsbCBiZSBnZW5lcmF0ZWQgdGhhdCBpbmNsdWRlcyBib3RoIGNvbnRlbnQgYXMgd2VsbCBhcyB0aGUgcmVzdWx0IG9mIGFueSBlbWJlZGRlZCBSIGNvZGUgY2h1bmtzIHdpdGhpbiB0aGUgbm90ZWJvb2suDQoNCkJlZm9yZSwgd2UgZW5kIHRoaXMgaW50cm9kdWN0b3J5IHR1dG9yaWFsLCBoZXJlJ3MgYSBbY2hlYXRzaGVldF0oaHR0cHM6Ly9ybWFya2Rvd24ucnN0dWRpby5jb20vbGVzc29uLTE1Lmh0bWwpIGZvciB3b3JraW5nIHdpdGggUiBNYXJrZG93biBhbmQgTm90ZWJvb2tzIGZvciBlYXN5IGFuZCBxdWljayByZWZlcmVuY2UuDQoNCk5vdyB0aGF0IHlvdSd2ZSBsZWFybnQgYWJvdXQgUiBOb3RlYm9va3MsIHlvdSBhcmUgcmVhZHkgdG8gY3JlYXRlIHlvdXIgb3duIGFuZCBnZXQgc3RhcnRlZCA6IEdvIHRvIGBGaWxlIC0+IE5ldyBGaWxlIC0+IFIgTm90ZWJvb2tgLCBvciBpZiB5b3UgaGF2ZSBvcGVuZWQgYW4gYFIgbWFya2Rvd25gIGZpbGUsIHlvdSBjYW4gc3BlY2lmeSB0aGUgb3V0cHV0IHR5cGUgYXMgYGh0bWxfbm90ZWJvb2tgIGluIHRoZSBkb2N1bWVudOKAmXMgWUFNTCBtZXRhZGF0YS4gSGF2ZSBmdW4gd29ya2luZyB3aXRoIFIgTm90ZWJvb2tzIQ0K</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkRlc2NyaXB0aXZlIFN0YXRpc3RpY3M6IFNjYWxpbmcgYW5kIENvcnJlbGF0aW9ucyINCm91dHB1dDogaHRtbF9ub3RlYm9vaw0KLS0tDQoNCkFmdGVyIHRha2luZyBhIGZpcnN0IGxvb2sgYXQgb3VyIGRhdGEgaW4gdGhlIGxhc3Qgbm90ZWJvb2ssIG5vdyB3ZSB3YW50IHRvIHN0YXJ0IGxvb2tpbmcgYXQgaXQgbW9yZSBjbG9zZWx5IGFzIHBlciBvdXIgbmVlZHMgYW5kIHJlcXVpcmVtZW50cy4gDQoNCiMjIyMgU2NhbGluZw0KDQpJbiBzaW1wbGUgdGVybXMsIHNjYWxpbmcgcmVmZXJzIHRvIGNoYW5naW5nIHNpemUgb2YgYW4gb2JqZWN0IHdpdGhvdXQgYWZmZWN0aW5nIGl0cyBzaGFwZS4NCg0KIyMjIyMgTGluZWFyIFRyYW5zZm9ybWF0aW9uOg0KDQpBIGxpbmVhciB0cmFuc2Zvcm1hdGlvbiBpbnZvbHZlcyBhZGRpdGlvbiwgc3VidHJhY3Rpb24sIG11bHRpcGxpY2F0aW9uLCBvciBkaXZpc2lvbiB3aXRoIGEgY29uc3RhbnQgdmFsdWUuIEZvciBleGFtcGxlLCBpZiB5b3UgYWRkIDEgdG8gdGhlIG51bWJlcnMgMiwgNCwgYW5kIDYsIHRoZSByZXN1bHRpbmcgbnVtYmVycyAoMywgNSwgYW5kIDcpIGFyZSBhIGxpbmVhciB0cmFuc2Zvcm1hdGlvbiBvZiB0aGUgb3JpZ2luYWwgbnVtYmVycy4gDQpMaW5lYXIgdHJhbnNmb3JtYXRpb25zIGFyZSB1c2VmdWwsIGJlY2F1c2UgdGhleSBhbGxvdyB5b3UgdG8gcmVwcmVzZW50IHlvdXIgZGF0YSBpbiBhIG1ldHJpYyB0aGF0IGlzIHN1aXRhYmxlIHRvIHlvdSBhbmQgeW91ciBhdWRpZW5jZS4NCg0KKipDZW50ZXJpbmc6KioNCg0K4oCYQ2VudGVyaW5n4oCZIGlzIGEgcGFydGljdWxhcmx5IGNvbW1vbiBsaW5lYXIgdHJhbnNmb3JtYXRpb24uIFRoaXMgbGluZWFyIHRyYW5zZm9yLSBtYXRpb24gaXMgZnJlcXVlbnRseSBhcHBsaWVkIHRvIGNvbnRpbnVvdXMgcHJlZGljdG9yIHZhcmlhYmxlcy4gDQpUbyBjZW50ZXIgYSBwcmVkaWN0b3IgdmFyaWFibGUsIHN1YnRyYWN0IHRoZSBtZWFuIG9mIHRoYXQgcHJlZGljdG9yIHZhcmlhYmxlIGZyb20gZWFjaCBkYXRhIHBvaW50LiBBcyBhIHJlc3VsdCwgZWFjaCBkYXRhIHBvaW50IGlzIGV4cHJlc3NlZCBpbiB0ZXJtcyBvZiBob3cgbXVjaCBpdCBpcyBhYm92ZSB0aGUgbWVhbiAocG9zaXRpdmUgc2NvcmUpIG9yIGJlbG93IHRoZSBtZWFuIChuZWdhdGl2ZSBzY29yZSkuIFRodXMsIHN1YnRyYWN0aW5nIHRoZSBtZWFuIG91dCBvZiB0aGUgdmFyaWFibGUgZXhwcmVzc2VzIGVhY2ggZGF0YSBwb2ludCBhcyBhIG1lYW4tZGV2aWF0aW9uIHNjb3JlLiBUaGUgdmFsdWUgemVybyBub3cgaGFzIGEgbmV3IG1lYW5pbmcgZm9yIHRoaXMgdmFyaWFibGU6IGl0IGlzIGF0IHRoZSDigJhjZW50ZXLigJkgb2YgdGhlIHZhcmlhYmxl4oCZcyBkaXN0cmlidXRpb24sIG5hbWVseSwgdGhlIG1lYW4uDQoNCioqU3RhbmRhcmRpemluZzoqKg0KDQpBIHNlY29uZCBjb21tb24gbGluZWFyIHRyYW5zZm9ybWF0aW9uIGlzIOKAmHN0YW5kYXJkaXppbmfigJkgb3Ig4oCYeuKAk3Njb3JpbmfigJkuIEZvciBzdGFuZGFyZGl6aW5nLCB0aGUgY2VudGVyZWQgdmFyaWFibGUgaXMgZGl2aWRlZCBieSB0aGUgc3RhbmRhcmQgZGV2aWF0aW9uIG9mIHRoZSBzYW1wbGUuDQoNCkxldCdzIGxvb2sgYXQgYW4gZXhhbXBsZTogDQoNClRoZSBmb2xsb3dpbmcgYXJlIHJlc3BvbnNlIGR1cmF0aW9ucyBmcm9tIGEgcHN5Y2hvbGluZ3Vpc3RpYyBleHBlcmltZW50Og0KDQpgNDYwbXMgNDgwbXMgNTAwbXMgNTIwbXMgNTQwbXNgDQoNClRoZSBtZWFuIG9mIHRoZXNlIGZpdmUgbnVtYmVycyBpcyBgNTAwbXNgLiANCg0KQ2VudGVyaW5nIHRoZXNlIG51bWJlcnMgcmVzdWx0cyBpbiB0aGUgZm9sbG93aW5nOg0KDQpg4oiSIDQwbXMg4oiSIDIwbXMgMG1zICsyMG1zICsgNDBtc2ANCg0KVGhlIHN0YW5kYXJkIGRldmlhdGlvbiAobGVhcm50IGluIGxhc3Qgbm90ZWJvb2spIGZvciB0aGVzZSBudW1iZXJzIGlzIGB+MzJtc2AuIA0KDQpUbyDigJhzdGFuZGFyZGl6ZeKAmSwgd2UgaGF2ZSB0byBkaXZpZGUgdGhlIGNlbnRlcmVkIGRhdGEgYnkgdGhlIHN0YW5kYXJkIGRldmlhdGlvbi4gRm9yIGV4YW1wbGUsIHRoZSBmaXJzdCBwb2ludCwgYOKAkzQwbXNgLCBkaXZpZGVkIGJ5IGAzMm1zYCwgeWllbGRzIGDigJMxLjNgLiBTaW5jZSBlYWNoIGRhdGEgcG9pbnQgaXMgZGl2aWRlZCBieSB0aGUgc2FtZSBudW1iZXIsIHRoaXMgY2hhbmdlIHF1YWxpZmllcyBhcyBhIGxpbmVhciB0cmFuc2Zvcm1hdGlvbi4NCg0KQXMgYSByZXN1bHQgb2Ygc3RhbmRhcmRpemF0aW9uLCB5b3UgZ2V0IHRoZSBmb2xsb3dpbmcgbnVtYmVycyAocm91bmRlZCB0byBvbmUgZGlnaXQpOg0KDQpg4oiSMS4zeiDiiJIgMC42eiAweiArIDAuNnogKzEuM3pgDQoNClRoZSByYXcgcmVzcG9uc2UgZHVyYXRpb24gYDQ2MG1zYCBpcyBg4oCTNDBtc2AgKGFmdGVyIGNlbnRlcmluZyksIHdoaWNoIGNvcnJlc3BvbmRzIHRvIGJlaW5nIGAxLjNgIHN0YW5kYXJkIGRldmlhdGlvbnMgYmVsb3cgdGhlIG1lYW4uIFRodXMsIHN0YW5kYXJkaXphdGlvbiBpbnZvbHZlcyByZS1leHByZXNzaW5nIHRoZSBkYXRhIGluIHRlcm1zIG9mICoqaG93IG1hbnkgc3RhbmRhcmQgZGV2aWF0aW9ucyB0aGV5IGFyZSBhd2F5IGZyb20gdGhlIG1lYW4qKi4NCg0KIyMjIyMgQnV0IHdoeSB0aGlzIGV4dHJhIGVmZm9ydD8NCg0KU3RhbmRhcmRpemluZyBpcyBhIHdheSBvZiBnZXR0aW5nIHJpZCBvZiBhIHZhcmlhYmxl4oCZcyBtZXRyaWMuIEluIGEgc2l0dWF0aW9uIHdpdGggbXVsdGlwbGUgdmFyaWFibGVzLCBlYWNoIHZhcmlhYmxlIG1heSBoYXZlIGEgZGlmZmVyZW50IHN0YW5kYXJkIGRldmlhdGlvbiwgYnV0IGJ5IGRpdmlkaW5nIGVhY2ggdmFyaWFibGUgYnkgdGhlIHJlc3BlY3RpdmUgc3RhbmRhcmQgZGV2aWF0aW9uLCBpdCBpcyBwb3NzaWJsZSB0byBjb252ZXJ0IGFsbCB2YXJpYWJsZXMgaW50byBhIHNjYWxlIG9mICoqc3RhbmRhcmQgdW5pdHMqKi4gVGhpcyBzb21ldGltZXMgbWF5IGhlbHAgaW4gbWFraW5nIHZhcmlhYmxlcyBjb21wYXJhYmxlLCBmb3IgZXhhbXBsZSwgd2hlbiBhc3Nlc3NpbmcgdGhlIHJlbGF0aXZlIGltcGFjdCBvZiBtdWx0aXBsZSBwcmVkaWN0b3JzLiBGb3IgZXhhbXBsZSwgaWYgeW91IGNhbiBpbWFnaW5lIHdlIGhhdmUgdHdvIHF1ZXN0aW9ubmFpcmVzIC0gb25lIGZvciBleHRyYXZlcnNpb24gd2hlcmUgeW91IHNjb3JlZCAyIG91dCBvZiAxMCBhbmQgdGhlIG90aGVyIGZvciBncnVtcGluZXNzIHdoZXJlIHlvdSBzY29yZWQgMzUgb3V0IG9mIDUwLCB0aGVuIGl0IGRvZXNu4oCZdCBtYWtlIGEgbG90IG9mIHNlbnNlIHRvIHRyeSB0byBjb21wYXJlIHlvdXIgcmF3IHNjb3JlIG9mIDIgb24gdGhlIGV4dHJhdmVyc2lvbiBxdWVzdGlvbm5haXJlIHRvIHlvdXIgcmF3IHNjb3JlIG9mIDM1IG9uIHRoZSBncnVtcGluZXNzIHF1ZXN0aW9ubmFpcmUuIFRoZSByYXcgc2NvcmVzIGZvciB0aGUgdHdvIHZhcmlhYmxlcyBhcmUg4oCcYWJvdXTigJ0gZnVuZGFtZW50YWxseSBkaWZmZXJlbnQgdGhpbmdzLCBzbyB0aGlzIHdvdWxkIGJlIGxpa2UgY29tcGFyaW5nIGFwcGxlcyB0byBvcmFuZ2VzLiBCdXQgaWYgeW91IHN0YW5kYXJkaXplIHRoZW0sIHRoZXkgd2lsbCBzdGlsbCBiZWNvbWUgY29tcGFyYWJsZSBpbiBzb21lIHNlbnNlLg0KDQpMZXQncyBhbHNvIGV4YW1pbmUgdGhlIHNjb3JlIG9mIDM1IG91dCBvZiA1MCBmb3IgZ3J1bXBpbmVzcy4gV291bGQgdGhpcyBtZWFuIHRoYXQgeW91J3JlIDcwJSBncnVtcHk/IEluc3RlYWQgb2YgaW50ZXJwcmV0aW5nIHJhdyBkYXRhIHRoaXMgd2F5LCBpdCB3b3VsZCBtYWtlIG1vcmUgc2Vuc2UgaWYgd2UgZGVzY3JpYmUgeW91ciBncnVtcGluZXNzIGluIHRlcm1zIG9mIHRoZSBvdmVyYWxsIGRpc3RyaWJ1dGlvbiBvZiB0aGUgZ3J1bXBpbmVzcyBvZiBodW1hbnMgd2hpY2ggaXMgcG9zc2libGUgdGhyb3VnaCAgc3RhbmRhcmRpc2F0aW9uIGkuZS4gd2hlcmUgZG8geW91IGxpZSBvbiB0aGUgZ3J1bXBpbmVzcyBzcGVjdHJ1bSBvZiB0aGUgYWxsIGh1bWFucz8gOykNCg0KYGBge3J9DQojVHJ5IGl0IG91dCB5b3Vyc2VsZg0KI0RlZmluZSBhIHZlY3RvciB3aXRoIEdydW1waW5lc3Mgc2NvcmVzIG9mIHlvdSBhbmQgeW91ciBmcmllbmRzIGFuZCBmaW5kIHRoZSB6IHNjb3JlIGZvciB5b3VyIHNlbGYNClggPSBjKDE1LCAxNiwgMTcsIDE4LCAxOCwgMTksIDIwKSAgICAgICAgICAgICAgICAgICAgICAgDQp6ID0gKFggLSBtZWFuKFgpKSAvIHNkKFgpDQpgYGANCg0KX1JlZmVyZW5jZTogQ2hhcHRlciA1LCBXaW50ZXIgQi5fDQoNCiMjIyMgQ29ycmVsYXRpb24NCg0KU28gZmFyIHdlIGhhdmUgZm9jdXNlZCBlbnRpcmVseSBvbiBob3cgdG8gY29uc3RydWN0IGRlc2NyaXB0aXZlIHN0YXRpc3RpY3MgZm9yIGEgc2luZ2xlIHZhcmlhYmxlLiBXZSBoYXZlbuKAmXQgdGFsa2VkIGFib3V0IGhvdyB0byBkZXNjcmliZSB0aGUgcmVsYXRpb25zaGlwcyBiZXR3ZWVuIHZhcmlhYmxlcyBpbiB0aGUgZGF0YS4gVG8gZG8gdGhhdCwgd2Ugd2FudCB0byB0YWxrIG1vc3RseSBhYm91dCB0aGUgY29ycmVsYXRpb24gYmV0d2VlbiB2YXJpYWJsZXMuDQoNCmBgYHtyfQ0Kc2V0d2QoIi9Vc2Vycy9sZW5vdm8xL0Rlc2t0b3AvbXRlY2gvY291cnNlcy9zdGF0cy9EYXRhc2V0cy9kYXRhLyIpDQoNCiNMZXQncyBsb2FkIHNvbWUgZGF0YQ0KbG9hZCggInBhcmVudGhvb2QuUmRhdGEiICkNCndobyhUUlVFKQ0KYGBgDQoNCmBgYHtyfQ0KI1RyeSBkZXNjcmliZSgpIGZvciB0aGUgYWJvdmUgZGF0YWZyYW1lDQpgYGANCg0KDQpgYGB7cn0NCiNMZXQncyBhbHNvIHRha2UgYSBncmFwaGljYWwgbG9vayBhdCB0aGUgZGF0YSANCmhpc3QocGFyZW50aG9vZCRkYW4uc2xlZXApDQoNCiNUcnkgcGxvdHRpbmcgZm9yIHRoZSBvdGhlciAyIHZhcmlhYmxlcw0KDQpgYGANCg0KQnV0IHdlIG5vdyB3YW50IHRvIHRha2UgYSBsb29rIGF0IHRoZSByZWxhdGlvbnNoaXAgYmV0d2VlbiB0d28gdmFyaWFibGVzLiBuIG9yZGVyIHRvIHZpc3VhbGl6ZSB0aGF0LCBpdCBpcyBiZXR0ZXIgdG8gcGxvdCBhICoqc2NhdHRlciBwbG90LioqIChQbG90dGluZyBncmFwaHMgd2lsbCBiZSBjb3ZlcmVkIGluIGRldGFpbCBhIHNlcGFyYXRlIG5vdGVib29rKS4NCg0KX0JyaWVmIG5vdGUgb24gU2NhdHRlcnBsb3RzOl8NCg0KSW4gdGhpcyBraW5kIG9mIHBsb3QsIGVhY2ggb2JzZXJ2YXRpb24gY29ycmVzcG9uZHMgdG8gb25lIGRvdDogdGhlIGhvcml6b250YWwgbG9jYXRpb24gb2YgdGhlIGRvdCBwbG90cyB0aGUgdmFsdWUgb2YgdGhlIG9ic2VydmF0aW9uIG9uIG9uZSB2YXJpYWJsZSwgYW5kIHRoZSB2ZXJ0aWNhbCBsb2NhdGlvbiBkaXNwbGF5cyBpdHMgdmFsdWUgb24gdGhlIG90aGVyIHZhcmlhYmxlLiBJbiBtYW55IHNpdHVhdGlvbnMgeW91IGRvbuKAmXQgcmVhbGx5IGhhdmUgYSBjbGVhciBvcGluaW9uIGFib3V0IHdoYXQgdGhlIGNhdXNhbCByZWxhdGlvbnNoaXAgaXMgKGUuZy4sIGRvZXMgQSBjYXVzZSBCLCBvciBkb2VzIEIgY2F1c2UgQSwgb3IgZG9lcyBzb21lIG90aGVyIHZhcmlhYmxlIEMgY29udHJvbHMgYm90aCBBIGFuZCBCKS4gSWYgdGhhdOKAmXMgdGhlIGNhc2UsIGl0IGRvZXNu4oCZdCByZWFsbHkgbWF0dGVyIHdoaWNoIHZhcmlhYmxlIHlvdSBwbG90IG9uIHRoZSB4LWF4aXMgYW5kIHdoaWNoIG9uZSB5b3UgcGxvdCBvbiB0aGUgeS1heGlzLiBIb3dldmVyLCBpbiBtYW55IHNpdHVhdGlvbnMgeW91IGRvIGhhdmUgYSBwcmV0dHkgc3Ryb25nIGlkZWEgd2hpY2ggdmFyaWFibGUgeW91IHRoaW5rIGlzIG1vc3QgbGlrZWx5IHRvIGJlIGNhdXNhbCwgb3IgYXQgbGVhc3QgeW91IGhhdmUgc29tZSBzdXNwaWNpb25zIGluIHRoYXQgZGlyZWN0aW9uLiBJZiBzbywgdGhlbiBpdOKAmXMgY29udmVudGlvbmFsIHRvIHBsb3QgdGhlICoqY2F1c2UqKiB2YXJpYWJsZSBvbiB0aGUgKip4LWF4aXMqKiwgYW5kIHRoZSAqKmVmZmVjdCoqIHZhcmlhYmxlIG9uIHRoZSAqKnktYXhpcyoqLiANCg0KU3VwcG9zZSBvdXIgZ29hbCBpcyB0byBkcmF3IGEgc2NhdHRlcnBsb3QgZGlzcGxheWluZyB0aGUgcmVsYXRpb25zaGlwIGJldHdlZW4gdGhlIGFtb3VudCBvZiBzbGVlcCB0aGF0IERhbiBnZXRzIChkYW4uc2xlZXApIGFuZCBob3cgZ3J1bXB5IHNoZSBpcyB0aGUgbmV4dCBkYXkgKGRhbi5ncnVtcCkuIF9EbyB5b3Ugc3VzcGVjdCBhIGNhdXNhbCByZWxhdGlvbnNoaXAgaGVyZT9fDQoNCkEgc2ltcGxlIHdheSB0byBwbG90IHRoZXNlIHNjYXR0ZXIgcGxvdHMgaXMgdG8gdXNlIHRoZSBzY2F0dGVycGxvdCgpIGZ1bmN0aW9uIGluIHRoZSBjYXIgcGFja2FnZS4gDQoNCkxldCdzIGxvYWQgdGhlIHBhY2thZ2UgYW5kIGdldCBzdGFydGVkLg0KDQpgYGB7cn0NCmluc3RhbGwucGFja2FnZXMoImNhciIpDQppbnN0YWxsLnBhY2thZ2VzKCJSY3BwIikNCmBgYA0KDQoNCmBgYHtyfQ0KbGlicmFyeShjYXIpDQpzY2F0dGVycGxvdCggZGFuLmdydW1wIH4gZGFuLnNsZWVwLCBkYXRhID0gcGFyZW50aG9vZCwgcmVnTGluZSA9IEZBTFNFLCBzbW9vdGggPSBGQUxTRSkNCnNjYXR0ZXJwbG90DQpgYGANCg0KYGBge3J9DQojUGxvdCBhIHNjYXR0ZXIgcGxvdCBmb3IgYmFieS5zbGVlcCBhbmQgZGFuLmdydW1wIHZhcmlhYmxlcw0KYGBgDQoNCg0KSnVzdCBieSBwbGFpbiBvYnNlcnZhdGlvbiBhbmQgY29tcGFyaXNvbiwgeW91IGNhbiBzZWUgdGhhdCB0aGUgcmVsYXRpb25zaGlwIGlzIHF1YWxpdGF0aXZlbHkgdGhlIHNhbWUgaW4gYm90aCBjYXNlczogbW9yZSBzbGVlcCBlcXVhbHMgbGVzcyBncnVtcCEgSG93ZXZlciwgaXTigJlzIGFsc28gcHJldHR5IG9idmlvdXMgdGhhdCB0aGUgcmVsYXRpb25zaGlwIGJldHdlZW4gZGFuLnNsZWVwIGFuZCBkYW4uZ3J1bXAgaXMgc3Ryb25nZXIgdGhhbiB0aGUgcmVsYXRpb25zaGlwIGJldHdlZW4gYmFieS5zbGVlcCBhbmQgZGFuLmdydW1wLiANCg0KQnV0IHdoYXQgYWJvdXQgdGhlIHBsb3QgYmV0d2VlbiBiYWJ5LnNsZWVwIGFuZCBkYW4uc2xlZXA/DQoNCmBgYHtyfQ0KI1Bsb3QgYmFieSBzbGVlcCBhbmQgZGFuIHNsZWVwIGhlcmUNCmBgYA0KDQpJcyB0aGUgZGlyZWN0aW9uIG9mIHRoaXMgcGxvdCBzYW1lIGFzIHRoZSBlYXJsaWVyIHBsb3RzPyBXaGF0IGFib3V0IHN0cmVuZ3RoPw0KDQojIyMjIyBDb3JyZWxhdGlvbiBjb2VmZmljaWVudA0KDQpJbiBvcmRlciB0byB0byBxdWFudGl0YXRpdmVseSByZXByZXNlbnQgdGhlIHJlbGF0aW9uc2hpcHMgb2Ygc3RyZW5ndGggYW5kIGRpcmVjdGlvbiB3ZSBkaXNjdXNzZWQgYWJvdmUsIHdlIGNhbiB1c2UgY29ycmVsYXRpb24gY29lZmZpY2llbnQuDQoNClRoZSBjb3JyZWxhdGlvbiBjb2VmZmljaWVudCAob3IgUGVhcnNvbidzIGNvcnJlbGF0aW9uIGNvZWZmaWNpZW50KSBiZXR3ZWVuIHR3byB2YXJpYWJsZXMgWCBhbmQgWSAoc29tZXRpbWVzIGRlbm90ZWQgX3J+WFl+XyApIGlzIGEgbWVhc3VyZSB0aGF0IHZhcmllcyBmcm9tIC0xIHRvIDEuIFdoZW4gX3JfID0gLTEgaXQgbWVhbnMgdGhhdCB3ZSBoYXZlIGEgcGVyZmVjdCBuZWdhdGl2ZSByZWxhdGlvbnNoaXAsIGFuZCB3aGVuIF9yXyA9IDEgaXQgbWVhbnMgd2UgaGF2ZSBhIHBlcmZlY3QgcG9zaXRpdmUgcmVsYXRpb25zaGlwLiBXaGVuIF9yXyA9IDAsIHRoZXJl4oCZcyBubyByZWxhdGlvbnNoaXAgYXQgYWxsLg0KDQpMb29rIGF0IHRoZSBwbG90cyBmb3IgZGlmZmVyZW50IF9yXyB2YWx1ZXM6DQoNCiFbQ29ycmVsYXRpb24gcGxvdHNdKC9Vc2Vycy9sZW5vdm8xL0Rlc2t0b3AvbXRlY2gvY291cnNlcy9zdGF0cy9JbWFnZXMvZmlnNC5wbmcpDQoNCiMjIyMjIENvdmFyaWFuY2UNCg0KVGhlIGNvdmFyaWFuY2UgYmV0d2VlbiB0d28gdmFyaWFibGVzIFggYW5kIFkgaXMgYSBnZW5lcmFsaXNhdGlvbiBvZiB0aGUgbm90aW9uIG9mIHRoZSB2YXJpYW5jZTsgaXTigJlzIGEgbWF0aGVtYXRpY2FsbHkgc2ltcGxlIHdheSBvZiBkZXNjcmliaW5nIHRoZSByZWxhdGlvbnNoaXAgYmV0d2VlbiB0d28gdmFyaWFibGVzOg0KDQogXGJlZ2lue2FsaWduKn0NCiANCiBDb3YgKFgsIFkpID0gXGZyYWN7MX17Ti0xfVxzdW1fe2k9MX1ee059IChYLSBcb3ZlcmxpbmV7WH0gKSAoWS0gXG92ZXJsaW5le1l9ICkgIFxcDQogDQogXGVuZHthbGlnbip9DQogDQpDb3ZhcmlhbmNlIGNhbiBiZSB1bmRlcnN0b29kIGFzIGFuIOKAnGF2ZXJhZ2UgY3Jvc3MgcHJvZHVjdOKAnSBiZXR3ZWVuIFggYW5kIFkgLiBUaGUgY292YXJpYW5jZSBoYXMgdGhlIG5pY2UgcHJvcGVydHkgdGhhdCwgaWYgWCBhbmQgWSBhcmUgZW50aXJlbHkgdW5yZWxhdGVkLCB0aGVuIHRoZSBjb3ZhcmlhbmNlIGlzIGV4YWN0bHkgemVyby4gSWYgaXQgaXMgcG9zaXRpdmUsIHRoZW4gdGhlIGNvdmFyaWFuY2UgaXMgYWxzbyBwb3NpdGl2ZTsgYW5kIGlmIHRoZSByZWxhdGlvbnNoaXAgaXMgbmVnYXRpdmUgdGhlbiB0aGUgY292YXJpYW5jZSBpcyBhbHNvIG5lZ2F0aXZlLiBCdXQgYXMgaXQgaGFzIHdlaXJkIHVuaXRzICh0cnkgc2VlaW5nIGZvciB5b3Vyc2VsZiksIGl0IHNpIGRpZmZpY3VsdCB0byBpbnRlcnByZXQgYW5kIHRoZXJlZm9yZSB3ZSBzdGFuZGFyZGlzZSB0aGUgY292YXJpYW5jZSwgdGhlIGV4YWN0IHNhbWUgd2F5IHRoYXQgdGhlIHotc2NvcmUgc3RhbmRhcmRpc2VzIGEgcmF3IHNjb3JlOiBieSBkaXZpZGluZyBieSB0aGUgc3RhbmRhcmQgZGV2aWF0aW9uLiBIb3dldmVyLCBiZWNhdXNlIHdlIGhhdmUgdHdvIHZhcmlhYmxlcyB0aGF0IGNvbnRyaWJ1dGUgdG8gdGhlIGNvdmFyaWFuY2UsIHRoZSBzdGFuZGFyZGlzYXRpb24gb25seSB3b3JrcyBpZiB3ZSBkaXZpZGUgYnkgYm90aCBzdGFuZGFyZCBkZXZpYXRpb25zLiANCg0KVGhpcyBpcyB3aGF0IHdlIGNhbGwgYXMgdGhlIGNvcnJlbGF0aW9uIGNvZWZmaWNlbnQsIF9yXzoNCg0KXGJlZ2lue2FsaWduKn0NCg0KIHJ+WFl+ID0gXGZyYWN7Q292KFgsWSl9e1xzaWdtYV97WH0gXHNpZ21hX3tZfX0NCg0KXGVuZHthbGlnbip9DQoNClRoaXMgd2F5LCBjb3ZhcmlhbmNlIHByb3BlcnRpZXMgYXJlIHJldGFpbmVkIGFuZCBpdCBhbHNvIGJlY29tZXMgaW50ZXJwcmV0YWJsZS4NCg0KTm93IGxldCdzIGNoZWNrIG91dCBob3cgdG8gY29kZSB0aGlzIHVzaW5nIGNvcigpLg0KDQpgYGB7cn0NCmNvcih4ID0gcGFyZW50aG9vZCRkYW4uc2xlZXAsIHkgPSBwYXJlbnRob29kJGRhbi5ncnVtcCkNCg0KI1RyeSBnaXZpbmcgdGhlIGVudGlyZSBkYXRhZnJhbWUgJ3BhcmVudGhvb2QnIGFzIGlucHV0IGluIGNvcigpDQpgYGANCg0KV2hhdCBkaWQgeW91IGZpbmQ/DQoNCiMjIyMjIFdoYXQgZG9lcyByID0gMC40IG1lYW4/DQoNCkl0IHJlYWxseSBkZXBlbmRzIG9uIHdoYXQgeW91IHdhbnQgdG8gdXNlIHRoZSBkYXRhIGZvciwgYW5kIG9uIGhvdyBzdHJvbmcgdGhlIGNvcnJlbGF0aW9ucyBpbiB5b3VyIGZpZWxkIHRlbmQgdG8gYmUuDQoNCiFbQ29ycmVsYXRpb24gY29lZmZpY2llbnQgaW50ZXJwcmV0YXRpb24gdGFibGVdKC9Vc2Vycy9sZW5vdm8xL0Rlc2t0b3AvbXRlY2gvY291cnNlcy9zdGF0cy9JbWFnZXMvZmlnNS5wbmcpDQogDQpOb3cgbGV0J3MgdGFrZSBhIGxvb2sgYXQgdGhpcyBkYXRhIGNhbGxlZCAiQW5zY29tYmUncyBRdWFydGV0Ig0KIA0KYGBge3J9DQpsb2FkKCAiYW5zY29tYmVzcXVhcnRldC5SZGF0YSIgKQ0KY29yKCBYMSwgWTEgKQ0KY29yKCBYMiwgWTIgKQ0KY29yIChYMywgWTMpDQpjb3IgKFg0LCBZNCkNCmBgYA0KDQpXZXJlIHRoZSBjb3JyZWxhdGlvbiBjb2VmZmljaWVudHMgc2FtZT8NCg0KTm93IHRyeSBwbG90dGluZyB0aGVtLg0KDQpgYGB7cn0NCnNjYXR0ZXJwbG90KCkNCmBgYA0KDQpUaGVyZWZvcmUsIHJlbWVtYmVyIHRvIGFsd2F5cyBsb29rIGF0IHRoZSBzY2F0dGVycGxvdCBiZWZvcmUgYXR0YWNoaW5nIGFueSBpbnRlcnByZXRhdGlvbiB0byB0aGUgZGF0YSENCg0KSWYgd2UgaGF2ZSB0byBwcm9wZXJseSBkZWZpbmUgdGhlIHJvbGUgb2YgUGVhcnNvbidzIGNvZWZmaWNpZW50LCB3ZSBjYW4gc2F5IHRoYXQgaXQgYWN0dWFsbHkgbWVhc3VyZXMgdGhlIHN0cmVuZ3RoIG9mIHRoZSBsaW5lYXIgcmVsYXRpb25zaGlwIGJldHdlZW4gdHdvIHZhcmlhYmxlcy4gSW4gb3RoZXIgd29yZHMsIGl0IGdpdmVzIGEgbWVhc3VyZSBvZiB0aGUgZXh0ZW50IHRvIHdoaWNoIHRoZSBkYXRhIGFsbCB0ZW5kIHRvIGZhbGwgb24gYSBzaW5nbGUsIHBlcmZlY3RseSBzdHJhaWdodCBsaW5lLg0KDQojIyMjIyBTcGVhcm1hbidzIFJhbmsgT3JkZXIgQ29ycmVsYXRpb24gQ29lZmZpY2llbnQNCiANCkJ1dCBsZXQncyB0YWtlIGEgbG9vayBhdCBhbm90aGVyIGRhdGFzZXQgYW5kIGZpbmQgY29ycmVsYXRpb24gYmV0d2VlbiBpdHMgdmFyaWFibGVzLg0KDQpgYGB7cn0NCnNldHdkKCIvVXNlcnMvbGVub3ZvMS9EZXNrdG9wL210ZWNoL2NvdXJzZXMvc3RhdHMvRGF0YXNldHMvZGF0YS8iKQ0KbG9hZCggImVmZm9ydC5SZGF0YSIgKQ0KZWZmb3J0DQpjb3IoIGVmZm9ydCRob3VycywgZWZmb3J0JGdyYWRlICkNCmBgYA0KDQpJZiB5b3UgcGxvdCB0aGlzIC0gDQoNCmBgYHtyfQ0Kc2NhdHRlcnBsb3QoZWZmb3J0JGhvdXJzLCBlZmZvcnQkZ3JhZGUsIHJlZ0xpbmUgPSBUUlVFLCBzbW9vdGggPSBGQUxTRSkNCmBgYA0KDQpUaGUgY29ycmVsYXRpb24gX3JfID0gMC45MSB3ZSBnZXQgYWJvdmUgZG9lIHNub3QgcmVwcmVzZW50IHRoZSBhY3R1YWwgcmVsYXRpb25zaGlwIHRoZSBwbG90IGlzIGRlcGljdGluZy4gV2hhdCB3ZeKAmXJlIGxvb2tpbmcgZm9yIGlzIHNvbWV0aGluZyB0aGF0IGNhcHR1cmVzIHRoZSBmYWN0IHRoYXQgdGhlcmUgaXMgYSBwZXJmZWN0ICoqb3JkaW5hbCByZWxhdGlvbnNoaXAqKiBoZXJlLiBUaGF0IGlzLCBpZiBzdHVkZW50IDEgd29ya3MgbW9yZSBob3VycyB0aGFuIHN0dWRlbnQgMiwgdGhlbiB3ZSBjYW4gZ3VhcmFudGVlIHRoYXQgc3R1ZGVudCAxIHdpbGwgZ2V0IHRoZSBiZXR0ZXIgZ3JhZGUuDQoNCklmIHdl4oCZcmUgbG9va2luZyBmb3Igb3JkaW5hbCByZWxhdGlvbnNoaXBzLCBhbGwgd2UgaGF2ZSB0byBkbyBpcyB0cmVhdCB0aGUgZGF0YSBhcyBpZiBpdCB3ZXJlIG9yZGluYWwgc2NhbGUhIFNvLCBpbnN0ZWFkIG9mIG1lYXN1cmluZyBlZmZvcnQgaW4gdGVybXMgb2Yg4oCcaG91cnMgd29ya2Vk4oCdLCBsZXQncyByYW5rIGFsbCAxMCBvZiB0aGUgc3R1ZGVudHMgaW4gb3JkZXIgb2YgaG91cnMgd29ya2VkLiBUaGF0IGlzLCBzdHVkZW50IDEgZGlkIHRoZSBsZWFzdCB3b3JrIG91dCBvZiBhbnlvbmUgKDIgaG91cnMpIHNvIHRoZXkgZ2V0IHRoZSBsb3dlc3QgcmFuayAocmFuayA9IDEpLiBTdHVkZW50IDQgd2FzIHRoZSBuZXh0IGxhemllc3QsIHB1dHRpbmcgaW4gb25seSA2IGhvdXJzIG9mIHdvcmsgaW4gb3ZlciB0aGUgd2hvbGUgc2VtZXN0ZXIsIHNvIHRoZXkgZ2V0IHRoZSBuZXh0IGxvd2VzdCByYW5rIChyYW5rID0gMikuDQoNCmBgYHtyfQ0KaG91cnMucmFuayA8LSByYW5rKCBlZmZvcnQkaG91cnMgKSAgICMgcmFuayBzdHVkZW50cyBieSBob3VycyB3b3JrZWQNCmdyYWRlLnJhbmsgPC0gcmFuayggZWZmb3J0JGdyYWRlICkgICAjIHJhbmsgc3R1ZGVudHMgYnkgZ3JhZGUgcmVjZWl2ZWQNCg0KI05vdyB0cnkgY29yKCkgZnVuY3Rpb24gZm9yIHRoZXNlDQpjb3IoIGhvdXJzLnJhbmssIGdyYWRlLnJhbmsgKQ0KYGBgDQoNCk5vdyB0aGUgY29ycmVsYXRpb24gY29lZmZpY2llbnQgd2UgZ2V0IGlzIGRpZmZlcmVudCBmcm9tIHRoZSBQZXJhc29uJ3MgY29ycmVsYXRpb24gY29lZmZpY2llbnQgX3JfIHdlIGdvdCBlYXJsaWVyLiBUaGlzIG5ldyBjb3JyZWxhdGlvbiBjb2VmZmljaWVudCB0aGF0IHdlIGdvdCBpcyBjYWxsZWQgJyoqU3BlYXJtYW4ncyBDb3JyZWxhdGlvbiBDb2VmZmljaWVudCoqJywgZGVub3RlZCBieSAkXHJobyQuDQoNCmBgYHtyfQ0KI0V4ZWN1dGUgdGhpcyBhbmQgY29tcGFyZSB3aXRoIHRoZSBjb3JyZWxhdGlvbiBjb2VmZmljaWVudCB3ZSBnb3QgYWJvdmUNCmNvciggZWZmb3J0JGhvdXJzLCBlZmZvcnQkZ3JhZGUsIG1ldGhvZCA9ICJzcGVhcm1hbiIpDQpgYGANCg0KIyMjIyMgSGFuZGxpbmcgbWlzc2luZyB2YWx1ZXMNCg0KV2UndmUgc2VlbiBpbiBlYXJsaWVyIGxlY3R1cmVzIHRoYXQgdGhlcmUgY291bGQgYmUgbWlzc2luZyB2YWx1ZXMgaW4gZGF0YSB3aGljaCBhcmUgcmVwcmVzZW50ZWQgYnkgYE5BYCBpbiBSLiBPbmUgZWFzeSB3YXkgdG8gcmVtb3ZlIHRoZW0gaXMgdXNpbmcgYG5hLnJtID0gVFJVRWAgYXMgYXJndW1lbnQgaW4gbWFueSBmdW5jdGlvbnMuDQoNCkJ1dCB3aGF0IGlmIHdlIGhhdmUgbWlzc2luZyB2YWx1ZXMgaW4gYSBkYXRhZnJhbWUgd2hlcmUgd2UgaGF2ZSB0byBmaW5kIGNvcnJlbGF0aW9ucyBhY3Jvc3MgdmFyaWFibGVzLg0KDQpMZXQncyBsb29rIGF0IHN1Y2ggYSBkYXRhc2V0Lg0KDQpgYGB7cn0NCmxvYWQoICJwYXJlbnRob29kMi5SZGF0YSIgKQ0KcHJpbnQoIHBhcmVudGhvb2QyICkNCmRlc2NyaWJlKCBwYXJlbnRob29kMiApIA0KI0NoZWNrIGhvdyBtYW55IG1pc3NpbmcgdmFsdWVzIGFyZSB0aGVyZSBmb3IgZWFjaCB2YXJpYWJsZSAtIGNvbXBhcmUgdGhlIHZhbHVlcyBpbiAnbicgd2l0aCB0aGUgbnVtYmVyIG9mIGRheXMuDQpgYGANCg0KTm93LCBsZXQncyB0cnkgZmluZGluZyBjb3JyZWxhdGlvbnMgZm9yIHRoaXMgZGF0YWZyYW1lLg0KDQpgYGB7cn0NCmNvcihwYXJlbnRob29kMikNCmBgYA0KDQpJbiBvcmRlciB0b3Agb3ZlcmNvbWUgdGhpcyBwcm9ibGVtLCB3ZSBjYW4gdXNlIGB1c2VgIGFzIGFuIGFyZ3VtZW50IGluIHRoZSBjb3IoKSBmdW5jdGlvbi4gVHJ5IG91dCB0aGUgZm9sbG93aW5nLg0KDQpgYGB7cn0NCmNvcihwYXJlbnRob29kMiwgdXNlID0gImNvbXBsZXRlLm9icyIpDQpjb3IocGFyZW50aG9vZDIsIHVzZSA9ICJwYWlyd2lzZS5jb21wbGV0ZS5vYnMiKQ0KYGBgDQoNCldoZW4gd2UgY2hvb3NlIGB1c2UgPSAiY29tcGxldGUub2JzImAsIFIgd2lsbCBjb21wbGV0ZWx5IGlnbm9yZSBhbGwgY2FzZXMgKGkuZS4sIGFsbCByb3dzIGluIG91ciBwYXJlbnRob29kMiBkYXRhIGZyYW1lKSB0aGF0IGhhdmUgYW55IG1pc3NpbmcgdmFsdWVzIGF0IGFsbC4gRm9yIGVnLiwgaWYgeW91IGNob29zZSB1c2UgPSAiY29tcGxldGUub2JzIiBSIHdpbGwgaWdub3JlIHRoYXQgcm93IGNvbXBsZXRlbHk6IHRoYXQgaXMsIGV2ZW4gd2hlbiBpdOKAmXMgdHJ5aW5nIHRvIGNhbGN1bGF0ZSB0aGUgY29ycmVsYXRpb24gYmV0d2VlbiBkYW4uc2xlZXAgYW5kIGRhbi5ncnVtcCwgb2JzZXJ2YXRpb24gMSB3aWxsIGJlIGlnbm9yZWQsIGJlY2F1c2UgdGhlIHZhbHVlIG9mIGJhYnkuc2xlZXAgaXMgbWlzc2luZyBmb3IgdGhhdCBvYnNlcnZhdGlvbi4NCg0KV2hlcmVhcyB3aGVuIHdlIHNldCBgdXNlID0gInBhaXJ3aXNlLmNvbXBsZXRlLm9icyJgIFIgb25seSBsb29rcyBhdCB0aGUgdmFyaWFibGVzIHRoYXQgaXTigJlzIHRyeWluZyB0byBjb3JyZWxhdGUgd2hlbiBkZXRlcm1pbmluZyB3aGF0IHRvIGRyb3AuIFNvLCBmb3IgaW5zdGFuY2UsIHNpbmNlIHRoZSBvbmx5IG1pc3NpbmcgdmFsdWUgZm9yIG9ic2VydmF0aW9uIDEgb2YgcGFyZW50aG9vZDIgaXMgZm9yIGJhYnkuc2xlZXAgUiB3aWxsIG9ubHkgZHJvcCBvYnNlcnZhdGlvbiAxIHdoZW4gYmFieS5zbGVlcCBpcyBvbmUgb2YgdGhlIHZhcmlhYmxlcyBpbnZvbHZlZDogYW5kIHNvIFIga2VlcHMgb2JzZXJ2YXRpb24gMSB3aGVuIHRyeWluZyB0byBjb3JyZWxhdGUgZGFuLnNsZWVwIGFuZCBkYW4uZ3J1bXAuDQoNClRoZSBhYm92ZSBvcGVyYXRpb24gY2FuIGFsc28gYmUgcGVyZm9ybWVkIGJ5IGFub3RoZXIgZnVuY3Rpb24gY2FsbGVkIGBjb3JyZWxhdGUoKWAgaW4gYGxzcmAgcGFja2FnZS4NCg0KVHJ5IGl0IG91dC4NCmBgYHtyfQ0KI1RyeSBjb3JyZWxhdGUoKSBmb3IgcGFyZW50aG9vZDIgaGVyZQ0KYGBgDQoNCl9SZWZlcmVuY2UgOiBDaGFwdGVyIDUsIEQuIE5hdmFycm9fDQoNClRoYXQncyBhbGwgZm9sa3MhDQo=</div>
 
 
 
@@ -2020,7 +2208,7 @@ $(document).ready(function () {
 <!-- code folding -->
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("R notebook tutorial.Rmd");
+  window.initializeSourceEmbed("Module3_Nb2.Rmd");
   window.initializeCodeFolding("show" === "show");
 });
 </script>
